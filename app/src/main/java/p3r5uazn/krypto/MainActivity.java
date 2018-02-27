@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity
         //generating test data
         data = new ArrayList<>();
         KryptoCurrency test;
-        for( int i = 0; i < 20;i++)
+        for( int i = 0; i < 30;i++)
         {
             test = new KryptoCurrency();
             test.setName("test #"+i);

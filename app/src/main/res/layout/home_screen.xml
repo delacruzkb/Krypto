@@ -17,13 +17,13 @@
     <ListView
         android:id="@+id/currency_list"
         android:layout_width="match_parent"
-        android:layout_height="405dp"
+        android:layout_height="500dp"
         android:divider="@color/divider"
         android:dividerHeight="2.0sp" />
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="100dp"
         android:background="@color/main_background"
         android:gravity="right">
 
