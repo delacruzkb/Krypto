@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("p3r5uazn.krypto", appContext.getPackageName());
+        assertEquals("p3r5uazn.krypto_dark", appContext.getPackageName());
     }
 }
