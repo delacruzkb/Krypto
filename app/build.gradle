@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "p3r5uazn.krypto"
+        applicationId "p3r5uazn.krypto_dark"
         minSdkVersion 26
         targetSdkVersion 26
         versionCode 1
