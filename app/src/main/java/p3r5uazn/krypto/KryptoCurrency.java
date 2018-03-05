@@ -41,6 +41,10 @@ public class KryptoCurrency
         this.change = roundToCash(change);
     }
 
+    public String toString()
+    {
+        return getName();
+    }
     // Rounds a double to the hundredths
     private double roundToCash(double input)
     {

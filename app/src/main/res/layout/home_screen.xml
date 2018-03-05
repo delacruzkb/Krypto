@@ -18,21 +18,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/main_background"
-        android:gravity="right">
+        android:gravity="start">
 
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/main_background"
-            app:srcCompat="@android:drawable/ic_menu_preferences" />
+        <AutoCompleteTextView
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionHint="Search . . ."
+            android:completionThreshold="1"
+            android:textColor="@color/text" />
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/main_background"
-            app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
     </TableRow>
 
     <ListView
