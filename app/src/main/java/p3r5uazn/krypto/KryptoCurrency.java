@@ -1,12 +1,17 @@
 package p3r5uazn.krypto;
 
 
+import java.io.Serializable;
+
 /**
  * Created by kenso on 2/26/2018.
  */
 
-public class KryptoCurrency
+public class KryptoCurrency implements Serializable
 {
+
+    private static final long serialVersionUID = 1L;
+
     private String name;
     private double cost;
     private double change;

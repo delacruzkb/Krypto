@@ -1,5 +1,6 @@
 package p3r5uazn.krypto;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 {
+    public static final int BACKGROUND_CODE = 1;
     private AutoCompleteTextView searchBar;
     private ListView listView;
     private ArrayList<KryptoCurrency> data;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity
             test.setChange(i-1000.34);
             data.add(test);
         }
+        updateList(data);
 
         //Builds search_bar with auto complete
         searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, data);
@@ -58,8 +61,21 @@ public class MainActivity extends AppCompatActivity
                 updateList(tempSearch);
             }
         });
-        
+
+        //builds the ListView
         updateList(data);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                Intent intent = new Intent(view.getContext(),DetailsPage.class);
+                KryptoCurrency selected = (KryptoCurrency)parent.getAdapter().getItem(position);
+                intent.putExtra("KryptoCurrency", selected);
+
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void updateList(ArrayList<KryptoCurrency> list)
