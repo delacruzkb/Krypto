@@ -59,10 +59,13 @@ public class SettingsScreenListAdapter extends BaseAdapter
         ImageButton delete_button = rowView.findViewById(R.id.delete_button);
         delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
+                KryptoCurrency temp = mFavorites.get(position);
+                SettingsPage.removeFavorite(temp);
                 mFavorites.remove(position);
-                notifyDataSetChanged();
                 SettingsPage.updateAdapter(parent.getContext(),mFavorites);
+                notifyDataSetChanged();
             }
         });
 

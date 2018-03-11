@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     public static final int BACKGROUND_CODE = 1;
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
                 favorites.add(test);
             }
         }
+        Collections.sort(favorites);
+        Collections.sort(data);
 
 
         //Builds search_bar with auto complete
