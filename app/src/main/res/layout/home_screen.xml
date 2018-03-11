@@ -22,11 +22,18 @@
 
         <AutoCompleteTextView
             android:id="@+id/search_bar"
-            android:layout_width="match_parent"
+            android:layout_width="340dp"
             android:layout_height="wrap_content"
             android:completionHint="Search . . ."
             android:completionThreshold="1"
             android:textColor="@color/text" />
+
+        <ImageButton
+            android:id="@+id/settings_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/main_background"
+            app:srcCompat="@android:drawable/ic_menu_preferences" />
 
     </TableRow>
 

@@ -1,35 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_background">
+
+    <ImageButton
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:background="@color/main_background"
+        app:srcCompat="@android:drawable/btn_dialog" />
 
     <TextView
         android:id="@+id/currency_name"
         android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:text="BitCoin"
-        android:textAlignment="viewStart"
         android:textColor="@color/text"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/currency_cost"
-        android:layout_width="160dp"
+        android:id="@+id/currency_threshold"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:text="1,000,000.00"
+        android:text="1,000,000"
         android:textAlignment="textEnd"
         android:textColor="@color/text"
         android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/currency_change"
-        android:layout_width="80dp"
+    <Button
+        android:id="@+id/edit_threshold_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="- 0.00"
-        android:textAlignment="textEnd"
-        android:textColor="@color/text"
-        android:textSize="20sp" />
-
+        android:text="Edit" />
 </TableRow>

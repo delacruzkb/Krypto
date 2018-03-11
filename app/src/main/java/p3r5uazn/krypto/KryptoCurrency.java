@@ -15,11 +15,22 @@ public class KryptoCurrency implements Serializable
     private String name;
     private double cost;
     private double change;
+    private double threshold;
+
+    public double getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(double threshold) {
+        this.threshold = threshold;
+    }
+
     public KryptoCurrency()
     {
         name = "Insert Name Here";
         cost = 0;
         change = -10;
+        threshold = 1000;
     }
 
     public String getName() {

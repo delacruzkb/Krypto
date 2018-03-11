@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="switch_on_text">Push Notifications enabled</string>
+    <string name="switch_off_text">Push Notifications disabled</string>
     <string name="app_name">Krypto</string>
 </resources>
