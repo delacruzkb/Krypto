@@ -18,24 +18,24 @@ public class SettingsScreenListAdapter extends BaseAdapter
 {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private ArrayList<KryptoCurrency> mData;
-    public SettingsScreenListAdapter(Context context, ArrayList<KryptoCurrency> data)
+    private ArrayList<KryptoCurrency> mFavorites;
+    public SettingsScreenListAdapter(Context context, ArrayList<KryptoCurrency> favorites)
     {
         mContext =context;
-        mData = data;
+        mFavorites = favorites;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount()
     {
-        return mData.size();
+        return mFavorites.size();
     }
 
     @Override
     public Object getItem(int position)
     {
-        return mData.get(position);
+        return mFavorites.get(position);
     }
 
     @Override
@@ -60,9 +60,9 @@ public class SettingsScreenListAdapter extends BaseAdapter
         delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mData.remove(position);
+                mFavorites.remove(position);
                 notifyDataSetChanged();
-                SettingsPage.updateAdapter(parent.getContext(),mData);
+                SettingsPage.updateAdapter(parent.getContext(),mFavorites);
             }
         });
 
@@ -82,7 +82,7 @@ public class SettingsScreenListAdapter extends BaseAdapter
                     public void onClick(DialogInterface dialog, int which)
                     {
                         kryptoCurrency.setThreshold(Double.parseDouble(userInput.getText().toString()));
-                        currencyThreshold.setText(Double.toString(kryptoCurrency.getThreshold()));
+                        currencyThreshold.setText(String.format(Double.toString(kryptoCurrency.getThreshold())));
                         notifyDataSetChanged();
                     }
                 });
@@ -94,7 +94,7 @@ public class SettingsScreenListAdapter extends BaseAdapter
         });
 
         currencyName.setText(kryptoCurrency.getName());
-        currencyThreshold.setText(Double.toString(kryptoCurrency.getThreshold()));
+        currencyThreshold.setText(String.format(Double.toString(kryptoCurrency.getThreshold())));
 
 
         return rowView;

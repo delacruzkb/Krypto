@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ArrayList<KryptoCurrency> tempSearch = new ArrayList<>();
                 KryptoCurrency selected = (KryptoCurrency) parent.getAdapter().getItem(position);
-                tempSearch.add(data.get(data.lastIndexOf(selected)));
+                tempSearch.add(selected);
                 homeScreenListAdapter = new HomeScreenListAdapter(view.getContext(), tempSearch);
                 listView.setAdapter(homeScreenListAdapter);
             }
@@ -92,9 +92,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //What to do when coming back from the settings page
+    // updates the values of the interface
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK) {
+            data = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("data");
             favorites = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("favorites");
             homeScreenListAdapter = new HomeScreenListAdapter(this, favorites);
             listView.setAdapter(homeScreenListAdapter);

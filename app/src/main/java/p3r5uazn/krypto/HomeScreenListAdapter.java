@@ -13,25 +13,25 @@ public class HomeScreenListAdapter extends BaseAdapter
 {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private ArrayList<KryptoCurrency> mData;
+    private ArrayList<KryptoCurrency> mFavorites;
 
-    public HomeScreenListAdapter(Context context, ArrayList<KryptoCurrency> data)
+    public HomeScreenListAdapter(Context context, ArrayList<KryptoCurrency> favorites)
     {
         mContext =context;
-        mData = data;
+        mFavorites = favorites;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount()
     {
-        return mData.size();
+        return mFavorites.size();
     }
 
     @Override
     public Object getItem(int position)
     {
-        return mData.get(position);
+        return mFavorites.get(position);
     }
 
     @Override
