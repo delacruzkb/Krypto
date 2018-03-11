@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_background">
+
+    <ImageButton
+        android:id="@+id/add_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/main_background"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+    <TextView
+        android:id="@+id/currency_name"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:text="BitCoin"
+        android:textAlignment="viewStart"
+        android:textColor="@color/text"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/currency_cost"
+        android:layout_width="134dp"
+        android:layout_height="wrap_content"
+        android:text="100,000,000.00"
+        android:textAlignment="textEnd"
+        android:textColor="@color/text"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/currency_change"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="- 10.00"
+        android:textAlignment="textEnd"
+        android:textColor="@color/text"
+        android:textSize="20sp" />
+
+</TableRow>
