@@ -57,6 +57,16 @@ public class KryptoCurrency implements Serializable
         this.change = roundToCash(change);
     }
 
+    public boolean equals(KryptoCurrency currency)
+    {
+        return this.getName().equalsIgnoreCase(currency.getName());
+    }
+
+    public int compareTo(KryptoCurrency currency)
+    {
+        return this.getName().compareTo(currency.getName());
+    }
+
     public String toString()
     {
         return getName();

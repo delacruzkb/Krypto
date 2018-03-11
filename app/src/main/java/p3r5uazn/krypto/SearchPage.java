@@ -10,11 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SearchPage extends AppCompatActivity
 {
     private ArrayList<KryptoCurrency> data;
+    private ArrayList<KryptoCurrency> filteredData;
     private ArrayList<KryptoCurrency> favorites;
     private ListView listView;
     private static AutoCompleteTextView searchBar;
@@ -29,10 +31,16 @@ public class SearchPage extends AppCompatActivity
         final Intent intent = getIntent();
         data = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("data");
         favorites = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("favorites");
-        searchScreenListAdapter = new SearchScreenListAdapter(this, favorites, data);
+        filteredData=data;
+        // filters out currencies already in the favorites list
+        for(int i = 0; i< favorites.size(); i++)
+        {
+            filteredData.remove(filteredData.indexOf(favorites.get(i)));
+        }
+        searchScreenListAdapter = new SearchScreenListAdapter(this, favorites, filteredData);
 
         //Builds search_bar with auto complete
-        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, favorites);
+        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, filteredData);
         searchBar = findViewById(R.id.add_search_bar);
         searchBar.setAdapter(searchBarAdapter);
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -41,7 +49,7 @@ public class SearchPage extends AppCompatActivity
                 ArrayList<KryptoCurrency> tempSearch = new ArrayList<>();
                 KryptoCurrency selected = (KryptoCurrency) parent.getAdapter().getItem(position);
                 tempSearch.add(selected);
-                searchScreenListAdapter = new SearchScreenListAdapter(view.getContext(), tempSearch, data);
+                searchScreenListAdapter = new SearchScreenListAdapter(view.getContext(), tempSearch, filteredData);
                 listView.setAdapter(searchScreenListAdapter);
             }
         });

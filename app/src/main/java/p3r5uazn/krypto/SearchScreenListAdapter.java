@@ -21,6 +21,8 @@ public class SearchScreenListAdapter extends BaseAdapter
         mData = data;
         mFavorites = favorites;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
     }
 
     @Override
@@ -44,7 +46,7 @@ public class SearchScreenListAdapter extends BaseAdapter
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent)
     {
-        View rowView = mLayoutInflater.inflate(R.layout.settings_screen_list_item, parent,false);
+        View rowView = mLayoutInflater.inflate(R.layout.search_screen_list_item, parent,false);
 
         TextView currencyName = rowView.findViewById(R.id.currency_name);
         TextView currencyCost = rowView.findViewById(R.id.currency_cost);
@@ -57,7 +59,7 @@ public class SearchScreenListAdapter extends BaseAdapter
         currencyChange.setText(String.format(Double.toString(kryptoCurrency.getChange())));
 
 
-        ImageButton add_button = rowView.findViewById(R.id.delete_button);
+        ImageButton add_button = rowView.findViewById(R.id.add_button);
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
