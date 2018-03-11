@@ -35,7 +35,7 @@ public class SearchPage extends AppCompatActivity
         // filters out currencies already in the favorites list
         for(int i = 0; i< favorites.size(); i++)
         {
-            filteredData.remove(filteredData.indexOf(favorites.get(i)));
+            filteredData.remove(favorites.get(i));
         }
         searchScreenListAdapter = new SearchScreenListAdapter(this, favorites, filteredData);
 
