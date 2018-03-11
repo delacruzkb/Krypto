@@ -62,6 +62,7 @@ public class SettingsScreenListAdapter extends BaseAdapter
             public void onClick(View v) {
                 mData.remove(position);
                 notifyDataSetChanged();
+                SettingsPage.updateAdapter(parent.getContext(),mData);
             }
         });
 

@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<KryptoCurrency> data;
     private ArrayList<KryptoCurrency> favorites;
     private HomeScreenListAdapter homeScreenListAdapter;
-    private SettingsScreenListAdapter settingsScreenListAdapter;
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
 
     @Override
