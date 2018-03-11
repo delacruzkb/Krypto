@@ -98,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
             favorites = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("favorites");
             homeScreenListAdapter = new HomeScreenListAdapter(this, favorites);
             listView.setAdapter(homeScreenListAdapter);
+            searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, favorites);
+            searchBar.setAdapter(searchBarAdapter);
         }
     }
 
