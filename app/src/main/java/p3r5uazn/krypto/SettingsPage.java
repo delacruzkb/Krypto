@@ -77,9 +77,12 @@ public class SettingsPage extends AppCompatActivity
         searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, favorites);
         searchBar = findViewById(R.id.settings_search_bar);
         searchBar.setAdapter(searchBarAdapter);
-        searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                searchBar.setText("");
                 ArrayList<KryptoCurrency> tempSearch = new ArrayList<>();
                 KryptoCurrency selected = (KryptoCurrency) parent.getAdapter().getItem(position);
                 tempSearch.add(selected);

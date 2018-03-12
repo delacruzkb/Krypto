@@ -23,7 +23,7 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
     }
 
     public void setThreshold(double threshold) {
-        this.threshold = threshold;
+        this.threshold = roundToCash(threshold);
     }
 
     public KryptoCurrency()

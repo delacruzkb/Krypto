@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         data = new ArrayList<>();
         favorites = new ArrayList<>();
         KryptoCurrency test;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             test = new KryptoCurrency();
             if (i % 2 == 0) {
                 test.setName("Even test #" + i);
@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
         searchBar.setAdapter(searchBarAdapter);
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                searchBar.setText("");
                 ArrayList<KryptoCurrency> tempSearch = new ArrayList<>();
                 KryptoCurrency selected = (KryptoCurrency) parent.getAdapter().getItem(position);
                 tempSearch.add(selected);

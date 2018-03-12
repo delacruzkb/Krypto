@@ -83,7 +83,7 @@ public class SettingsScreenListAdapter extends BaseAdapter
                     public void onClick(DialogInterface dialog, int which)
                     {
                         kryptoCurrency.setThreshold(Double.parseDouble(userInput.getText().toString()));
-                        currencyThreshold.setText(String.format(Double.toString(kryptoCurrency.getThreshold())));
+                        currencyThreshold.setText(Double.toString(kryptoCurrency.getThreshold()));
                         notifyDataSetChanged();
                     }
                 });
