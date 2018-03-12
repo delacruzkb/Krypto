@@ -1,13 +1,14 @@
 package p3r5uazn.krypto;
 
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
  * Created by kenso on 2/26/2018.
  */
 
-public class KryptoCurrency implements Serializable
+public class KryptoCurrency implements Serializable, Comparable<Object>
 {
 
     private static final long serialVersionUID = 1L;
@@ -15,11 +16,22 @@ public class KryptoCurrency implements Serializable
     private String name;
     private double cost;
     private double change;
+    private double threshold;
+
+    public double getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(double threshold) {
+        this.threshold = roundToCash(threshold);
+    }
+
     public KryptoCurrency()
     {
         name = "Insert Name Here";
         cost = 0;
         change = -10;
+        threshold = 1000;
     }
 
     public String getName() {
@@ -44,6 +56,16 @@ public class KryptoCurrency implements Serializable
 
     public void setChange(double change) {
         this.change = roundToCash(change);
+    }
+
+    public boolean equals(Object currency)
+    {
+        return this.getName().equalsIgnoreCase(((KryptoCurrency)currency).getName());
+    }
+
+    public int compareTo(Object currency)
+    {
+        return this.getName().compareTo(((KryptoCurrency)currency).getName());
     }
 
     public String toString()

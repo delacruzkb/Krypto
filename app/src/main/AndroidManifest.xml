@@ -16,7 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailsPage"></activity>
+        <activity android:name=".DetailsPage" />
+        <activity android:name=".SettingsPage" />
+        <activity android:name=".SearchPage"></activity>
     </application>
 
 </manifest>

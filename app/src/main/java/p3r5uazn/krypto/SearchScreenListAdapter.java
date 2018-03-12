@@ -5,33 +5,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import java.util.ArrayList;
 
-
-public class HomeScreenListAdapter extends BaseAdapter
+public class SearchScreenListAdapter extends BaseAdapter
 {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
+    private ArrayList<KryptoCurrency> mData;
     private ArrayList<KryptoCurrency> mFavorites;
-
-    public HomeScreenListAdapter(Context context, ArrayList<KryptoCurrency> favorites)
+    public SearchScreenListAdapter(Context context, ArrayList<KryptoCurrency> favorites, ArrayList<KryptoCurrency> data)
     {
         mContext =context;
+        mData = data;
         mFavorites = favorites;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
     }
 
     @Override
     public int getCount()
     {
-        return mFavorites.size();
+        return mData.size();
     }
 
     @Override
     public Object getItem(int position)
     {
-        return mFavorites.get(position);
+        return mData.get(position);
     }
 
     @Override
@@ -41,9 +44,9 @@ public class HomeScreenListAdapter extends BaseAdapter
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(final int position, View convertView, final ViewGroup parent)
     {
-        View rowView = mLayoutInflater.inflate(R.layout.home_screen_list_item, parent,false);
+        View rowView = mLayoutInflater.inflate(R.layout.search_screen_list_item, parent,false);
 
         TextView currencyName = rowView.findViewById(R.id.currency_name);
         TextView currencyCost = rowView.findViewById(R.id.currency_cost);
@@ -55,6 +58,18 @@ public class HomeScreenListAdapter extends BaseAdapter
         currencyCost.setText(Double.toString(kryptoCurrency.getCost()));
         currencyChange.setText(String.format(Double.toString(kryptoCurrency.getChange())));
 
+
+        ImageButton add_button = rowView.findViewById(R.id.add_button);
+        add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                KryptoCurrency temp = mData.get(position);
+                mFavorites.add(mData.remove(position));
+                SearchPage.reloadListView(parent.getContext(),mFavorites);
+                notifyDataSetChanged();
+            }
+        });
 
         return rowView;
     }
