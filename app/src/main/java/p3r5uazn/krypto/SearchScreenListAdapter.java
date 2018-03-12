@@ -62,10 +62,12 @@ public class SearchScreenListAdapter extends BaseAdapter
         ImageButton add_button = rowView.findViewById(R.id.add_button);
         add_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
+                KryptoCurrency temp = mData.get(position);
                 mFavorites.add(mData.remove(position));
+                SearchPage.reloadListView(parent.getContext(),mFavorites);
                 notifyDataSetChanged();
-                SearchPage.updateAdapter(parent.getContext(),mData);
             }
         });
 

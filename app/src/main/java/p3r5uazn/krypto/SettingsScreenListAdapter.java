@@ -62,9 +62,7 @@ public class SettingsScreenListAdapter extends BaseAdapter
             public void onClick(View v)
             {
                 KryptoCurrency temp = mFavorites.get(position);
-                SettingsPage.removeFavorite(temp);
-                mFavorites.remove(position);
-                SettingsPage.updateAdapter(parent.getContext(),mFavorites);
+                SettingsPage.removeFavorite(parent.getContext(), temp);
                 notifyDataSetChanged();
             }
         });

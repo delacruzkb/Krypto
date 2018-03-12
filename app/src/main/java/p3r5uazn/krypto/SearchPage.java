@@ -10,18 +10,17 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SearchPage extends AppCompatActivity
 {
     private ArrayList<KryptoCurrency> data;
-    private ArrayList<KryptoCurrency> filteredData;
-    private ArrayList<KryptoCurrency> favorites;
-    private ListView listView;
+    private static ArrayList<KryptoCurrency> filteredData;
+    private static ArrayList<KryptoCurrency> favorites;
+    private static ListView listView;
     private static AutoCompleteTextView searchBar;
     private static ArrayAdapter<KryptoCurrency> searchBarAdapter;
-    private SearchScreenListAdapter searchScreenListAdapter;
+    private static SearchScreenListAdapter searchScreenListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,12 +30,8 @@ public class SearchPage extends AppCompatActivity
         final Intent intent = getIntent();
         data = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("data");
         favorites = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("favorites");
-        filteredData=data;
-        // filters out currencies already in the favorites list
-        for(int i = 0; i< favorites.size(); i++)
-        {
-            filteredData.remove(favorites.get(i));
-        }
+        filteredData= filterData(data, favorites);
+
         searchScreenListAdapter = new SearchScreenListAdapter(this, favorites, filteredData);
 
         //Builds search_bar with auto complete
@@ -49,7 +44,7 @@ public class SearchPage extends AppCompatActivity
                 ArrayList<KryptoCurrency> tempSearch = new ArrayList<>();
                 KryptoCurrency selected = (KryptoCurrency) parent.getAdapter().getItem(position);
                 tempSearch.add(selected);
-                searchScreenListAdapter = new SearchScreenListAdapter(view.getContext(), tempSearch, filteredData);
+                searchScreenListAdapter = new SearchScreenListAdapter(view.getContext(), favorites, tempSearch);
                 listView.setAdapter(searchScreenListAdapter);
             }
         });
@@ -70,10 +65,24 @@ public class SearchPage extends AppCompatActivity
         super.finish();
     }
 
-    // Required to update auto correct listing from within the adapter
-    protected static void updateAdapter(Context context, ArrayList<KryptoCurrency> newList)
+    protected static void reloadListView(Context context, ArrayList<KryptoCurrency> filter)
     {
-        searchBarAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, newList);
+        filteredData = filterData(filteredData, filter);
+        favorites = filter;
+        searchBarAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, filteredData);
         searchBar.setAdapter(searchBarAdapter);
+        searchScreenListAdapter = new SearchScreenListAdapter(context, favorites, filteredData);
+        listView.setAdapter(searchScreenListAdapter);
+    }
+
+    protected static ArrayList<KryptoCurrency> filterData(ArrayList<KryptoCurrency> source, ArrayList<KryptoCurrency> filterOut)
+    {
+        ArrayList<KryptoCurrency> filteredList = source;
+        for(int i = 0; i< filterOut.size(); i++)
+        {
+            source.remove(filterOut.get(i));
+        }
+
+        return filteredList;
     }
 }

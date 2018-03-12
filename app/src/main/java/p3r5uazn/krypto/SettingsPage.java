@@ -15,19 +15,18 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class SettingsPage extends AppCompatActivity
 {
     public static final int BACKGROUND_CODE = 1;
-    private ArrayList<KryptoCurrency> data;
+    private static ArrayList<KryptoCurrency> data;
     private static ArrayList<KryptoCurrency> favorites;
-    private ListView listView;
+    private static ListView listView;
     private TextView notificationLabel;
     private Switch notificationSwitch;
     private static AutoCompleteTextView searchBar;
     private static ArrayAdapter<KryptoCurrency> searchBarAdapter;
-    private SettingsScreenListAdapter settingsScreenListAdapter;
+    private static SettingsScreenListAdapter settingsScreenListAdapter;
     private ImageButton addButton;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -68,8 +67,6 @@ public class SettingsPage extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(addButton.getContext(), SearchPage.class);
-                Collections.sort(favorites);
-                Collections.sort(data);
                 intent.putExtra("favorites", favorites);
                 intent.putExtra("data",data);
                 startActivityForResult(intent, BACKGROUND_CODE);
@@ -105,8 +102,6 @@ public class SettingsPage extends AppCompatActivity
         if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK) {
             favorites = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("favorites");
             data = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("data");
-            Collections.sort(favorites);
-            Collections.sort(data);
             settingsScreenListAdapter = new SettingsScreenListAdapter(this, favorites);
             listView.setAdapter(settingsScreenListAdapter);
             searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, favorites);
@@ -118,8 +113,6 @@ public class SettingsPage extends AppCompatActivity
     public void finish()
     {
         Intent intent = new Intent();
-        Collections.sort(favorites);
-        Collections.sort(data);
         intent.putExtra("favorites", favorites);
         intent.putExtra("data",data);
 
@@ -127,21 +120,16 @@ public class SettingsPage extends AppCompatActivity
         super.finish();
     }
 
-    // Required to update auto correct listing from within the adapter
-    protected static void updateAdapter(Context context, ArrayList<KryptoCurrency> newList)
-    {
-        searchBarAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, newList);
-        searchBar.setAdapter(searchBarAdapter);
-    }
-
-    protected static void removeFavorite(KryptoCurrency currency)
+    protected static void removeFavorite(Context context, KryptoCurrency currency)
     {
         favorites.remove(currency);
+        if(!(data.contains(currency)))
+        {
+            data.add(currency);
+        }
+        settingsScreenListAdapter = new SettingsScreenListAdapter(context, favorites);
+        listView.setAdapter(settingsScreenListAdapter);
     }
 
-    protected static void addFavorite(KryptoCurrency currency)
-    {
-        favorites.add(currency);
-        Collections.sort(favorites);
-    }
+
 }

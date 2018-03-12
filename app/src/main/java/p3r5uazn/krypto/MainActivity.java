@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         data = new ArrayList<>();
         favorites = new ArrayList<>();
         KryptoCurrency test;
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 10; i++) {
             test = new KryptoCurrency();
             if (i % 2 == 0) {
                 test.setName("Even test #" + i);
