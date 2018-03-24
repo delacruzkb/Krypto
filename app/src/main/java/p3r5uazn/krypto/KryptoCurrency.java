@@ -1,17 +1,11 @@
 package p3r5uazn.krypto;
 
 
-import java.io.ObjectStreamException;
-import java.io.Serializable;
 
-/**
- * Created by kenso on 2/26/2018.
- */
 
-public class KryptoCurrency implements Serializable, Comparable<Object>
+public class KryptoCurrency implements Comparable<Object>
 {
 
-    private static final long serialVersionUID = 1L;
 
     private String name, id, symbol;
     private double priceUSD, priceBTC, volume24, marketCap, availableSupply, totalSupply;

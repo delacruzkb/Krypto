@@ -14,12 +14,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
-    public static final int BACKGROUND_CODE = 1;
+    private static final int BACKGROUND_CODE = 1;
     private AutoCompleteTextView searchBar;
     private ListView listView;
     private ImageButton settingsButton;
     private static ArrayList<KryptoCurrency> data;
-    private ArrayList<KryptoCurrency> favorites;
+    private static ArrayList<KryptoCurrency> favorites;
     private HomeScreenListAdapter homeScreenListAdapter;
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
 
@@ -50,13 +50,8 @@ public class MainActivity extends AppCompatActivity {
         Collections.sort(favorites);
         Collections.sort(data);
 
-        //Builds all of the views within the screen
+        //Builds all of the views within the screen and populates them with data
         buildViews();
-
-        //updates the list of favorites
-        homeScreenListAdapter = new HomeScreenListAdapter(this, favorites);
-        listView.setAdapter(homeScreenListAdapter);
-
     }
 
     //What to do when coming back from the settings page
@@ -64,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK) {
-            favorites = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("favorites");
             homeScreenListAdapter = new HomeScreenListAdapter(this, favorites);
             listView.setAdapter(homeScreenListAdapter);
             searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, favorites);
@@ -72,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected static void updateData(ArrayList<KryptoCurrency> update)
+    //Getters and setters for Data and Favorites
+    protected static void setData(ArrayList<KryptoCurrency> update)
     {
         data = update;
     }
@@ -82,10 +77,20 @@ public class MainActivity extends AppCompatActivity {
         return data;
     }
 
-    //Builds all of the views within the screen
+    protected static void setFavorites(ArrayList<KryptoCurrency> update)
+    {
+        favorites = update;
+    }
+
+    protected static ArrayList<KryptoCurrency> getFavorites()
+    {
+        return favorites;
+    }
+
+    //Builds all of the views within the screen and populates them with data
     private void buildViews()
     {
-        //Builds search_bar with auto complete
+        //Builds search_bar with auto complete and populates the search listing
         searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, favorites);
         searchBar = findViewById(R.id.search_bar);
         searchBar.setAdapter(searchBarAdapter);
@@ -108,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(listView.getContext(), SettingsPage.class);
-                intent.putExtra("data", data);
                 intent.putExtra("favorites", favorites);
                 startActivityForResult(intent, BACKGROUND_CODE);         // To transfer values of favorites
             }
@@ -126,5 +130,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //updates the list of favorites
+        homeScreenListAdapter = new HomeScreenListAdapter(this, favorites);
+        listView.setAdapter(homeScreenListAdapter);
+
     }
 }

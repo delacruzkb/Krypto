@@ -19,14 +19,14 @@ import java.util.ArrayList;
 public class SettingsPage extends AppCompatActivity
 {
     public static final int BACKGROUND_CODE = 1;
-    private static ArrayList<KryptoCurrency> data;
-    private static ArrayList<KryptoCurrency> favorites;
-    private static ListView listView;
+    private ArrayList<KryptoCurrency> data;
+    private ArrayList<KryptoCurrency> favorites;
+    private ListView listView;
     private TextView notificationLabel;
     private Switch notificationSwitch;
-    private static AutoCompleteTextView searchBar;
-    private static ArrayAdapter<KryptoCurrency> searchBarAdapter;
-    private static SettingsScreenListAdapter settingsScreenListAdapter;
+    private AutoCompleteTextView searchBar;
+    private ArrayAdapter<KryptoCurrency> searchBarAdapter;
+    private SettingsScreenListAdapter settingsScreenListAdapter;
     private ImageButton addButton;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -34,8 +34,8 @@ public class SettingsPage extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_screen);
         final Intent intent = getIntent();
-        data = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("data");
-        favorites = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("favorites");
+        data = MainActivity.getData();
+        favorites = MainActivity.getFavorites();
         settingsScreenListAdapter = new SettingsScreenListAdapter(this, favorites);
 
         //builds notification label and switch
@@ -52,10 +52,18 @@ public class SettingsPage extends AppCompatActivity
                 if(notificationSwitch.isChecked()) // is on
                 {
                     notificationLabel.setText(R.string.switch_on_text);
+                    /**
+                     * ToDo: Write code to enable push notifications
+                     *
+                     * **/
                 }
                 else // is off
                 {
                     notificationLabel.setText(R.string.switch_off_text);
+                    /**
+                     * ToDo: Write code to disable push notifications
+                     *
+                     * **/
                 }
             }
         });
@@ -67,8 +75,6 @@ public class SettingsPage extends AppCompatActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(addButton.getContext(), SearchPage.class);
-                intent.putExtra("favorites", favorites);
-                intent.putExtra("data",data);
                 startActivityForResult(intent, BACKGROUND_CODE);
             }
         });
