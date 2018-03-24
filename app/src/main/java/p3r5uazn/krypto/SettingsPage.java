@@ -19,25 +19,57 @@ import java.util.ArrayList;
 public class SettingsPage extends AppCompatActivity
 {
     public static final int BACKGROUND_CODE = 1;
-    private static ArrayList<KryptoCurrency> data;
     private static ArrayList<KryptoCurrency> favorites;
-    private static ListView listView;
+    private ListView listView;
     private TextView notificationLabel;
     private Switch notificationSwitch;
-    private static AutoCompleteTextView searchBar;
-    private static ArrayAdapter<KryptoCurrency> searchBarAdapter;
-    private static SettingsScreenListAdapter settingsScreenListAdapter;
+    private AutoCompleteTextView searchBar;
+    private ArrayAdapter<KryptoCurrency> searchBarAdapter;
+    private SettingsScreenListAdapter settingsScreenListAdapter;
     private ImageButton addButton;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_screen);
-        final Intent intent = getIntent();
-        data = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("data");
-        favorites = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("favorites");
-        settingsScreenListAdapter = new SettingsScreenListAdapter(this, favorites);
+        favorites = MainActivity.getFavorites();
+        //Builds all of the views within the screen and populates them with data
+        buildViews();
+    }
 
+    //Refresh values when returning from an activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK)
+        {
+            refreshList(this);
+        }
+    }
+
+
+    @Override
+    public void finish()
+    {
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
+        super.finish();
+    }
+
+    //refreshes the values of the screen
+    protected static void refreshList(Context context)
+    {
+        View rootView = ((Activity)context).getWindow().getDecorView().findViewById(android.R.id.content);
+        AutoCompleteTextView searchBar = rootView.findViewById(R.id.settings_search_bar);
+        ListView listView = rootView.findViewById(R.id.favorites_list);
+        SettingsScreenListAdapter settingsScreenListAdapter = new SettingsScreenListAdapter(context, favorites);
+        listView.setAdapter(settingsScreenListAdapter);
+        ArrayAdapter<KryptoCurrency> searchBarAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, favorites);
+        searchBar.setAdapter(searchBarAdapter);
+    }
+
+    //Builds all of the views within the screen and populates them with data
+    private void buildViews()
+    {
         //builds notification label and switch
         notificationLabel = findViewById(R.id.notification_label);
         notificationLabel.setText(R.string.switch_off_text);
@@ -52,28 +84,34 @@ public class SettingsPage extends AppCompatActivity
                 if(notificationSwitch.isChecked()) // is on
                 {
                     notificationLabel.setText(R.string.switch_on_text);
+                    /**
+                     * ToDo: Write code to enable push notifications
+                     *
+                     * **/
                 }
                 else // is off
                 {
                     notificationLabel.setText(R.string.switch_off_text);
+                    /**
+                     * ToDo: Write code to disable push notifications
+                     *
+                     * **/
                 }
             }
         });
 
-        //Builds add_button
+        //Builds add button
         addButton = findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 Intent intent = new Intent(addButton.getContext(), SearchPage.class);
-                intent.putExtra("favorites", favorites);
-                intent.putExtra("data",data);
                 startActivityForResult(intent, BACKGROUND_CODE);
             }
         });
 
-        //Builds search_bar with auto complete
+        //Builds search_bar with auto complete and populates the search listing
         searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, favorites);
         searchBar = findViewById(R.id.settings_search_bar);
         searchBar.setAdapter(searchBarAdapter);
@@ -91,48 +129,10 @@ public class SettingsPage extends AppCompatActivity
             }
         });
 
-        //Builds list view
+        //Builds listView
         listView = findViewById(R.id.favorites_list);
-        listView.setAdapter(settingsScreenListAdapter);
-
-
-    }
-
-    //What to do when coming back from the search page
-    // updates the values of the interface
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK) {
-            favorites = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("favorites");
-            data = (ArrayList<KryptoCurrency>) intent.getSerializableExtra("data");
-            settingsScreenListAdapter = new SettingsScreenListAdapter(this, favorites);
-            listView.setAdapter(settingsScreenListAdapter);
-            searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, favorites);
-            searchBar.setAdapter(searchBarAdapter);
-        }
-    }
-
-    @Override
-    public void finish()
-    {
-        Intent intent = new Intent();
-        intent.putExtra("favorites", favorites);
-        intent.putExtra("data",data);
-
-        setResult(RESULT_OK, intent);
-        super.finish();
-    }
-
-    protected static void removeFavorite(Context context, KryptoCurrency currency)
-    {
-        favorites.remove(currency);
-        if(!(data.contains(currency)))
-        {
-            data.add(currency);
-        }
-        settingsScreenListAdapter = new SettingsScreenListAdapter(context, favorites);
+        //updates the list of favorites
+        settingsScreenListAdapter = new SettingsScreenListAdapter(this, favorites);
         listView.setAdapter(settingsScreenListAdapter);
     }
-
-
 }

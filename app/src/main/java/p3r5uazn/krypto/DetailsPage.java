@@ -20,9 +20,9 @@ public class DetailsPage extends AppCompatActivity
         TextView name = findViewById(R.id.name);
         name.setText(currency.getName());
         TextView cost = findViewById(R.id.cost);
-        cost.setText(Double.toString(currency.getCost()));
+        cost.setText(Double.toString(currency.getPriceUSD()));
         TextView change = findViewById(R.id.change);
-        change.setText(Double.toString(currency.getChange()));
+        change.setText(Double.toString(currency.getPerChange1h()));
 
     }
 }

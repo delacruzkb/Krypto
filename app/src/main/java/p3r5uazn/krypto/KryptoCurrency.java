@@ -1,7 +1,6 @@
 package p3r5uazn.krypto;
 
 
-import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
