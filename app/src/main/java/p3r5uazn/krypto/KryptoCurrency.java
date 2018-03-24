@@ -13,10 +13,11 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
 
     private static final long serialVersionUID = 1L;
 
-    private String name;
-    private double cost;
-    private double change;
-    private double threshold;
+    private String name, id, symbol;
+    private double priceUSD, priceBTC, volume24, marketCap, availableSupply, totalSupply;
+    private double threshold, perChange1h, perChange24h, perChange7d, lastUpdated;
+    private int rank;
+
 
     public double getThreshold() {
         return threshold;
@@ -26,12 +27,120 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
         this.threshold = roundToCash(threshold);
     }
 
+
+
     public KryptoCurrency()
     {
+        id = "some id";
         name = "Insert Name Here";
-        cost = 0;
-        change = -10;
+        symbol = "A";
+        rank = 1;
+        priceUSD = 0;
+        priceBTC = 0;
+        volume24 = 0;
+        marketCap = 0;
+        availableSupply = 0;
+        totalSupply = 0;
+        perChange1h = 0;
+        perChange24h = 0;
+        perChange7d = 0;
+        lastUpdated = 0;
         threshold = 1000;
+    }
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public double getPriceBTC() {
+        return priceBTC;
+    }
+
+    public void setPriceBTC(double priceBTC) {
+        this.priceBTC = priceBTC;
+    }
+
+    public double getVolume24() {
+        return volume24;
+    }
+
+    public void setVolume24(double volume24) {
+        this.volume24 = volume24;
+    }
+
+    public double getMarketCap() {
+        return marketCap;
+    }
+
+    public void setMarketCap(double marketCap) {
+        this.marketCap = marketCap;
+    }
+
+    public double getAvailableSupply() {
+        return availableSupply;
+    }
+
+    public void setAvailableSupply(double availableSupply) {
+        this.availableSupply = availableSupply;
+    }
+
+    public double getTotalSupply() {
+        return totalSupply;
+    }
+
+    public void setTotalSupply(double totalSupply) {
+        this.totalSupply = totalSupply;
+    }
+
+    public double getPerChange1h() {
+        return perChange1h;
+    }
+
+    public void setPerChange1h(double perChange1h) {
+        this.perChange1h = perChange1h;
+    }
+
+    public double getPerChange24h() {
+        return perChange24h;
+    }
+
+    public void setPerChange24h(double perChange24h) {
+        this.perChange24h = perChange24h;
+    }
+
+    public double getPerchange7d() {
+        return perChange7d;
+    }
+
+    public void setPerchange7d(double perChange7d) {
+        this.perChange7d = perChange7d;
+    }
+
+    public double getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(double lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     public String getName() {
@@ -42,21 +151,14 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
         this.name = name;
     }
 
-    public double getCost() {
-        return cost;
+    public double getPriceUSD() {
+        return priceUSD;
     }
 
-    public void setCost(double cost) {
-        this.cost = roundToCash(cost);
+    public void setPriceUSD(double cost) {
+        this.priceUSD = roundToCash(cost);
     }
 
-    public double getChange() {
-        return change;
-    }
-
-    public void setChange(double change) {
-        this.change = roundToCash(change);
-    }
 
     public boolean equals(Object currency)
     {
