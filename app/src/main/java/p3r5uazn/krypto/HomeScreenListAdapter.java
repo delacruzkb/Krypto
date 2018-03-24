@@ -52,8 +52,8 @@ public class HomeScreenListAdapter extends BaseAdapter
         KryptoCurrency kryptoCurrency = (KryptoCurrency) getItem(position);
 
         currencyName.setText(kryptoCurrency.getName());
-        currencyCost.setText(Double.toString(kryptoCurrency.getCost()));
-        currencyChange.setText(String.format(Double.toString(kryptoCurrency.getChange())));
+        currencyCost.setText(Double.toString(kryptoCurrency.getPriceUSD()));
+        currencyChange.setText(String.format(Double.toString(kryptoCurrency.getPerChange1h())));
 
 
         return rowView;

@@ -21,8 +21,6 @@ public class SearchScreenListAdapter extends BaseAdapter
         mData = data;
         mFavorites = favorites;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-
     }
 
     @Override
@@ -55,8 +53,8 @@ public class SearchScreenListAdapter extends BaseAdapter
         KryptoCurrency kryptoCurrency = (KryptoCurrency) getItem(position);
 
         currencyName.setText(kryptoCurrency.getName());
-        currencyCost.setText(Double.toString(kryptoCurrency.getCost()));
-        currencyChange.setText(String.format(Double.toString(kryptoCurrency.getChange())));
+        currencyCost.setText(Double.toString(kryptoCurrency.getPriceUSD()));
+        currencyChange.setText(String.format(Double.toString(kryptoCurrency.getPerChange1h())));
 
 
         ImageButton add_button = rowView.findViewById(R.id.add_button);
@@ -64,9 +62,9 @@ public class SearchScreenListAdapter extends BaseAdapter
             @Override
             public void onClick(View v)
             {
-                KryptoCurrency temp = mData.get(position);
-                mFavorites.add(mData.remove(position));
-                SearchPage.reloadListView(parent.getContext(),mFavorites);
+                KryptoCurrency temp = mData.remove(position);
+                mFavorites.add(temp);
+                SearchPage.refreshList(parent.getContext());
                 notifyDataSetChanged();
             }
         });

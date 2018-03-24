@@ -54,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
         buildViews();
     }
 
-    //What to do when coming back from the settings page
-    // updates the values of the interface
+    //Refresh values when returning from an activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK) {
