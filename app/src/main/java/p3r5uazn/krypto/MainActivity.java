@@ -109,11 +109,11 @@ public class MainActivity extends AppCompatActivity {
 
         //Builds the settings button
         settingsButton = findViewById(R.id.settings_button);
+        //when clicked, go to the settings page
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(listView.getContext(), SettingsPage.class);
-                intent.putExtra("favorites", favorites);
                 startActivityForResult(intent, BACKGROUND_CODE);         // To transfer values of favorites
             }
         });
@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
         //builds the ListView
         listView = findViewById(R.id.currency_list);
+        //when an listing is clicked, go to the item's details page
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
