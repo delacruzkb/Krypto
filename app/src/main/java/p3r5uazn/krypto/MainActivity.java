@@ -62,11 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         //start to update the list
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,this);
-        queryTask.execute();
-
-        Collections.sort(favorites);
-        Collections.sort(data);
+        refreshScreen();
 
         //Builds all of the views within the screen and populates them with data
         buildViews();
@@ -76,10 +72,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK) {
-            homeScreenListAdapter = new HomeScreenListAdapter(this, favorites);
-            listView.setAdapter(homeScreenListAdapter);
-            searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, favorites);
-            searchBar.setAdapter(searchBarAdapter);
+            refreshScreen();
         }
     }
 
@@ -94,13 +87,11 @@ public class MainActivity extends AppCompatActivity {
         return data;
     }
 
-    protected static void setFavorites(ArrayList<KryptoCurrency> newList)
+    //updates values on all views
+    private void refreshScreen()
     {
-        favorites = newList;
-    }
-    protected static ArrayList<KryptoCurrency> getFavorites()
-    {
-        return favorites;
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,this);
+        queryTask.execute();
     }
 
 
@@ -157,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
     private void clearDatabase(FavoritesDatabase db)
     {
         KryptoCurrency temp=null;
-        AsyncTaskDeleteFavorites deleteTask = new AsyncTaskDeleteFavorites(db);
+        AsyncTaskDeleteFavorites deleteTask = new AsyncTaskDeleteFavorites(db,this);
         deleteTask.execute(temp);
     }
 }

@@ -2,6 +2,7 @@ package p3r5uazn.krypto;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -62,9 +63,9 @@ public class SettingsScreenListAdapter extends BaseAdapter
             public void onClick(View v)
             {
                 KryptoCurrency temp = mFavorites.get(position);
-                ArrayList<KryptoCurrency> tempList = MainActivity.getFavorites();
-                tempList.remove(temp);
-                SettingsPage.refreshList(mContext);
+                FavoritesDatabase favoritesDatabase = Room.databaseBuilder(mContext, FavoritesDatabase.class,"Favorites").build();
+                AsyncTaskDeleteFavorites deleteTask = new AsyncTaskDeleteFavorites(favoritesDatabase,mContext);
+                deleteTask.execute(temp);
                 notifyDataSetChanged();
             }
         });

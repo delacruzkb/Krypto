@@ -29,15 +29,35 @@ public class AsyncTaskQueryFavorites extends AsyncTask<Void,Void,ArrayList<Krypt
     protected void onPostExecute(ArrayList<KryptoCurrency> favorites)
     {
         super.onPostExecute(favorites);
+
+        //Sort list
         Collections.sort(favorites);
+
+        //get root view of context for updating values
         View rootView = ((Activity)context).getWindow().getDecorView().findViewById(android.R.id.content);
-        if(rootView.findViewById(R.id.currency_list) != null)
+
+        if(rootView.findViewById(R.id.currency_list) != null) // if called from MainActivity
         {
+            //Update ListView
             ListView listView = rootView.findViewById(R.id.currency_list);
             HomeScreenListAdapter homeScreenListAdapter = new HomeScreenListAdapter(context, favorites);
             listView.setAdapter(homeScreenListAdapter);
+
+            //Update Searchbar
             ArrayAdapter<KryptoCurrency> searchBarAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, favorites);
             AutoCompleteTextView searchBar = rootView.findViewById(R.id.search_bar);
+            searchBar.setAdapter(searchBarAdapter);
+        }
+        else if(rootView.findViewById(R.id.favorites_list) !=null) // if called from SettingsPage
+        {
+            //Update ListView
+            ListView listView = rootView.findViewById(R.id.favorites_list);
+            SettingsScreenListAdapter settingsScreenListAdapter = new SettingsScreenListAdapter(context, favorites);
+            listView.setAdapter(settingsScreenListAdapter);
+
+            //Update Searchbar
+            ArrayAdapter<KryptoCurrency> searchBarAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, favorites);
+            AutoCompleteTextView searchBar = rootView.findViewById(R.id.settings_search_bar);
             searchBar.setAdapter(searchBarAdapter);
         }
     }
@@ -45,6 +65,7 @@ public class AsyncTaskQueryFavorites extends AsyncTask<Void,Void,ArrayList<Krypt
     @Override
     protected ArrayList<KryptoCurrency> doInBackground(Void... voids)
     {
+        //return updated favorites list from database
         return (ArrayList<KryptoCurrency>) favoritesDatabase.kryptoCurrencyDao().getAllKryptoCurrencies();
     }
 }

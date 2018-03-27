@@ -29,7 +29,7 @@ public class SearchPage extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_screen);
         data = MainActivity.getData();
-        favorites = MainActivity.getFavorites();
+        favorites = new ArrayList<>();
         filteredData = filterData(data, favorites);
 
         //Builds all of the views within the screen and populates them with data

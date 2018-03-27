@@ -1,6 +1,7 @@
 package p3r5uazn.krypto;
 
 import android.app.Activity;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,9 +34,13 @@ public class SettingsPage extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_screen);
-        getIntent();
-        favoritesDatabase = (FavoritesDatabase)getIntent().getSerializableExtra("database");
-        favorites = MainActivity.getFavorites();
+        favoritesDatabase = Room.databaseBuilder(this, FavoritesDatabase.class,"Favorites").build();
+        favorites = new ArrayList<>();
+
+        //start to update the list
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,this);
+        queryTask.execute();
+
         //Builds all of the views within the screen and populates them with data
         buildViews();
     }
