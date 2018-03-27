@@ -27,11 +27,14 @@ public class SettingsPage extends AppCompatActivity
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
     private SettingsScreenListAdapter settingsScreenListAdapter;
     private ImageButton addButton;
+    private FavoritesDatabase favoritesDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_screen);
+        getIntent();
+        favoritesDatabase = (FavoritesDatabase)getIntent().getSerializableExtra("database");
         favorites = MainActivity.getFavorites();
         //Builds all of the views within the screen and populates them with data
         buildViews();

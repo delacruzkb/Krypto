@@ -1,6 +1,9 @@
 package p3r5uazn.krypto;
 
 import android.app.Activity;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,11 +25,21 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<KryptoCurrency> favorites;
     private HomeScreenListAdapter homeScreenListAdapter;
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
-
+    private FavoritesDatabase favoritesDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
+
+        //Sets up Database
+        favoritesDatabase = Room.databaseBuilder(this, FavoritesDatabase.class,"Favorites").build();
+
+        /**
+         * ToDo
+         * 1)make the key in the database class unique and relate to the data itself
+         * 2)remove the clearDatabase() method
+         * */
+        clearDatabase(favoritesDatabase);
 
         //generating test data
         data = new ArrayList<>();
@@ -44,9 +57,14 @@ public class MainActivity extends AppCompatActivity {
             data.add(test);
             if(i % 5 ==0)
             {
-                favorites.add(test);
+                AsyncTaskInsertFavorites insertTask = new AsyncTaskInsertFavorites(favoritesDatabase);
+                insertTask.execute(test);
             }
         }
+        //start to update the list
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,this);
+        queryTask.execute();
+
         Collections.sort(favorites);
         Collections.sort(data);
 
@@ -76,20 +94,20 @@ public class MainActivity extends AppCompatActivity {
         return data;
     }
 
-    protected static void setFavorites(ArrayList<KryptoCurrency> update)
+    protected static void setFavorites(ArrayList<KryptoCurrency> newList)
     {
-        favorites = update;
+        favorites = newList;
     }
-
     protected static ArrayList<KryptoCurrency> getFavorites()
     {
         return favorites;
     }
 
+
     //Builds all of the views within the screen and populates them with data
     private void buildViews()
     {
-        //Builds search_bar with auto complete and populates the search listing
+        //Builds search_bar with auto complete
         searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, favorites);
         searchBar = findViewById(R.id.search_bar);
         searchBar.setAdapter(searchBarAdapter);
@@ -134,5 +152,12 @@ public class MainActivity extends AppCompatActivity {
         homeScreenListAdapter = new HomeScreenListAdapter(this, favorites);
         listView.setAdapter(homeScreenListAdapter);
 
+    }
+
+    private void clearDatabase(FavoritesDatabase db)
+    {
+        KryptoCurrency temp=null;
+        AsyncTaskDeleteFavorites deleteTask = new AsyncTaskDeleteFavorites(db);
+        deleteTask.execute(temp);
     }
 }
