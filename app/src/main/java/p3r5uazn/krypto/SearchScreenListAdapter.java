@@ -1,5 +1,6 @@
 package p3r5uazn.krypto;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +15,10 @@ public class SearchScreenListAdapter extends BaseAdapter
     private Context mContext;
     private LayoutInflater mLayoutInflater;
     private ArrayList<KryptoCurrency> mData;
-    private ArrayList<KryptoCurrency> mFavorites;
-    public SearchScreenListAdapter(Context context, ArrayList<KryptoCurrency> favorites, ArrayList<KryptoCurrency> data)
+    public SearchScreenListAdapter(Context context, ArrayList<KryptoCurrency> data)
     {
         mContext =context;
         mData = data;
-        mFavorites = favorites;
         mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -63,9 +62,10 @@ public class SearchScreenListAdapter extends BaseAdapter
             public void onClick(View v)
             {
                 KryptoCurrency temp = mData.remove(position);
-                mFavorites.add(temp);
-                SearchPage.refreshList(parent.getContext());
-                notifyDataSetChanged();
+                KryptoDatabase favoritesDatabase = Room.databaseBuilder(mContext, KryptoDatabase.class,"Favorites").build();
+                AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(favoritesDatabase);
+                insertTask.execute(temp);
+                KryptoDatabase dataDatabase = Room.databaseBuilder(mContext, KryptoDatabase.class,"Data").build();
             }
         });
 

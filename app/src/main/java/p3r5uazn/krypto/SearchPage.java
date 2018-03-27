@@ -1,6 +1,7 @@
 package p3r5uazn.krypto;
 
 import android.app.Activity;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -15,9 +16,6 @@ import java.util.ArrayList;
 
 public class SearchPage extends AppCompatActivity
 {
-    private static ArrayList<KryptoCurrency> data;
-    private static ArrayList<KryptoCurrency> filteredData;
-    private static ArrayList<KryptoCurrency> favorites;
     private ListView listView;
     private AutoCompleteTextView searchBar;
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
@@ -28,10 +26,10 @@ public class SearchPage extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_screen);
-        data = MainActivity.getData();
-        favorites = MainActivity.getFavorites();
-        filteredData = filterData(data, favorites);
-
+        KryptoDatabase dataDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Data").build();
+        KryptoDatabase favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
+        AsyncTaskQueryFilteredData queryTask = new AsyncTaskQueryFilteredData(dataDatabase,favoritesDatabase,this);
+        queryTask.execute();
         //Builds all of the views within the screen and populates them with data
         buildViews();
     }
@@ -45,38 +43,13 @@ public class SearchPage extends AppCompatActivity
         super.finish();
     }
 
-    //refreshes the values of the screen when called from the adapter
-    protected static void refreshList(Context context)
-    {
-        View rootView = ((Activity)context).getWindow().getDecorView().findViewById(android.R.id.content);
-        filteredData = filterData(data, favorites);
-        AutoCompleteTextView searchBar = rootView.findViewById(R.id.add_search_bar);
-        ArrayAdapter<KryptoCurrency> searchBarAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, filteredData);
-        searchBar.setAdapter(searchBarAdapter);
-        SearchScreenListAdapter searchScreenListAdapter = new SearchScreenListAdapter(context, favorites, filteredData);
-        ListView listView = rootView.findViewById(R.id.data_list);
-        listView.setAdapter(searchScreenListAdapter);
-    }
-
-    //Returns an array with all of the items in "filterOut" removed from "source"
-    protected static ArrayList<KryptoCurrency> filterData(ArrayList<KryptoCurrency> source, ArrayList<KryptoCurrency> filterOut)
-    {
-        ArrayList<KryptoCurrency> filteredList= new ArrayList<>();
-        for(int i = 0; i< source.size(); i++)
-        {
-            if(!filterOut.contains(source.get(i)))
-            {
-                filteredList.add(source.get(i));
-            }
-        }
-        return filteredList;
-    }
 
     //Builds all of the views within the screen and populates them with data
     private void buildViews()
     {
+        ArrayList<KryptoCurrency> temp = new ArrayList<>();
         //Builds search_bar with auto complete
-        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, filteredData);
+        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, temp);
         searchBar = findViewById(R.id.add_search_bar);
         searchBar.setAdapter(searchBarAdapter);
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -88,13 +61,13 @@ public class SearchPage extends AppCompatActivity
                 ArrayList<KryptoCurrency> tempSearch = new ArrayList<>();
                 KryptoCurrency selected = (KryptoCurrency) parent.getAdapter().getItem(position);
                 tempSearch.add(selected);
-                searchScreenListAdapter = new SearchScreenListAdapter(view.getContext(), favorites, tempSearch);
+                searchScreenListAdapter = new SearchScreenListAdapter(view.getContext(), tempSearch);
                 listView.setAdapter(searchScreenListAdapter);
             }
         });
 
         //Builds list view
-        searchScreenListAdapter = new SearchScreenListAdapter(this, favorites, filteredData);
+        searchScreenListAdapter = new SearchScreenListAdapter(this, temp);
         listView = findViewById(R.id.data_list);
         listView.setAdapter(searchScreenListAdapter);
     }

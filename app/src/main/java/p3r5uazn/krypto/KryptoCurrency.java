@@ -1,14 +1,23 @@
 package p3r5uazn.krypto;
 
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.io.Serializable;
 
 /**
  * Created by kenso on 2/26/2018.
  */
-
+@Entity
 public class KryptoCurrency implements Serializable, Comparable<Object>
 {
+    /***
+     * ToDo
+     * Make key unique and relate to the data
+     */
+    @PrimaryKey(autoGenerate = true)
+    private int key;
 
     private static final long serialVersionUID = 1L;
 
@@ -158,6 +167,21 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
         this.priceUSD = roundToCash(cost);
     }
 
+    public int getKey() {
+        return key;
+    }
+
+    public void setKey(int key) {
+        this.key = key;
+    }
+
+    public double getPerChange7d() {
+        return perChange7d;
+    }
+
+    public void setPerChange7d(double perChange7d) {
+        this.perChange7d = perChange7d;
+    }
 
     public boolean equals(Object currency)
     {
