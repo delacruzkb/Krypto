@@ -1,9 +1,7 @@
 package p3r5uazn.krypto;
 
 import android.app.Activity;
-import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Room;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +12,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     private static final int BACKGROUND_CODE = 1;
@@ -25,21 +22,23 @@ public class MainActivity extends AppCompatActivity {
     private static ArrayList<KryptoCurrency> favorites;
     private HomeScreenListAdapter homeScreenListAdapter;
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
-    private FavoritesDatabase favoritesDatabase;
+    private KryptoDatabase favoritesDatabase;
+    private KryptoDatabase dataDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
 
         //Sets up Database
-        favoritesDatabase = Room.databaseBuilder(this, FavoritesDatabase.class,"Favorites").build();
-
+        favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
+        dataDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"data").build();
         /**
          * ToDo
          * 1)make the key in the database class unique and relate to the data itself
          * 2)remove the clearDatabase() method
          * */
         clearDatabase(favoritesDatabase);
+        clearDatabase(dataDatabase);
 
         //generating test data
         data = new ArrayList<>();
@@ -54,13 +53,16 @@ public class MainActivity extends AppCompatActivity {
             }
             test.setPriceUSD(1000000.03 + i);
             test.setPerChange1h(i - 1000.34);
-            data.add(test);
+            AsyncTaskInsertDatabase insertTask1 = new AsyncTaskInsertDatabase(dataDatabase);
+            insertTask1.execute(test);
             if(i % 5 ==0)
             {
-                AsyncTaskInsertFavorites insertTask = new AsyncTaskInsertFavorites(favoritesDatabase);
-                insertTask.execute(test);
+                AsyncTaskInsertDatabase insertTask2 = new AsyncTaskInsertDatabase(favoritesDatabase);
+                insertTask2.execute(test);
             }
         }
+
+
         //start to update the list
         refreshScreen();
 
@@ -74,17 +76,6 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK) {
             refreshScreen();
         }
-    }
-
-    //Getters and setters for Data and Favorites
-    protected static void setData(ArrayList<KryptoCurrency> update)
-    {
-        data = update;
-    }
-
-    protected static ArrayList<KryptoCurrency> getData()
-    {
-        return data;
     }
 
     //updates values on all views
@@ -145,10 +136,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void clearDatabase(FavoritesDatabase db)
+    private void clearDatabase(KryptoDatabase db)
     {
         KryptoCurrency temp=null;
-        AsyncTaskDeleteFavorites deleteTask = new AsyncTaskDeleteFavorites(db,this);
+        AsyncTaskDeleteDatabase deleteTask = new AsyncTaskDeleteDatabase(db,this);
         deleteTask.execute(temp);
     }
 }

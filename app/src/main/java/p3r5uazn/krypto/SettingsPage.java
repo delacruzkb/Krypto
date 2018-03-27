@@ -2,7 +2,6 @@ package p3r5uazn.krypto;
 
 import android.app.Activity;
 import android.arch.persistence.room.Room;
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -28,17 +27,17 @@ public class SettingsPage extends AppCompatActivity
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
     private SettingsScreenListAdapter settingsScreenListAdapter;
     private ImageButton addButton;
-    private FavoritesDatabase favoritesDatabase;
+    private KryptoDatabase kryptoDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_screen);
-        favoritesDatabase = Room.databaseBuilder(this, FavoritesDatabase.class,"Favorites").build();
+        kryptoDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
         favorites = new ArrayList<>();
 
         //start to update the list
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,this);
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(kryptoDatabase,this);
         queryTask.execute();
 
         //Builds all of the views within the screen and populates them with data
@@ -50,7 +49,7 @@ public class SettingsPage extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK)
         {
-            refreshList(this);
+            refreshScreen();
         }
     }
 
@@ -64,15 +63,10 @@ public class SettingsPage extends AppCompatActivity
     }
 
     //refreshes the values of the screen
-    protected static void refreshList(Context context)
+    protected void refreshScreen()
     {
-        View rootView = ((Activity)context).getWindow().getDecorView().findViewById(android.R.id.content);
-        AutoCompleteTextView searchBar = rootView.findViewById(R.id.settings_search_bar);
-        ListView listView = rootView.findViewById(R.id.favorites_list);
-        SettingsScreenListAdapter settingsScreenListAdapter = new SettingsScreenListAdapter(context, favorites);
-        listView.setAdapter(settingsScreenListAdapter);
-        ArrayAdapter<KryptoCurrency> searchBarAdapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, favorites);
-        searchBar.setAdapter(searchBarAdapter);
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(kryptoDatabase,this);
+        queryTask.execute();
     }
 
     //Builds all of the views within the screen and populates them with data

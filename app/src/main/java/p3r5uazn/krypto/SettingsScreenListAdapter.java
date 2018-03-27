@@ -63,8 +63,8 @@ public class SettingsScreenListAdapter extends BaseAdapter
             public void onClick(View v)
             {
                 KryptoCurrency temp = mFavorites.get(position);
-                FavoritesDatabase favoritesDatabase = Room.databaseBuilder(mContext, FavoritesDatabase.class,"Favorites").build();
-                AsyncTaskDeleteFavorites deleteTask = new AsyncTaskDeleteFavorites(favoritesDatabase,mContext);
+                KryptoDatabase favoritesDatabase = Room.databaseBuilder(mContext, KryptoDatabase.class,"Favorites").build();
+                AsyncTaskDeleteDatabase deleteTask = new AsyncTaskDeleteDatabase(favoritesDatabase,mContext);
                 deleteTask.execute(temp);
                 notifyDataSetChanged();
             }

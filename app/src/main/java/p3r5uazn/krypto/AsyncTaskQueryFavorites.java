@@ -17,9 +17,9 @@ import java.util.Collections;
 
 public class AsyncTaskQueryFavorites extends AsyncTask<Void,Void,ArrayList<KryptoCurrency>>
 {
-    FavoritesDatabase favoritesDatabase;
+    KryptoDatabase favoritesDatabase;
     Context context;
-    public AsyncTaskQueryFavorites(FavoritesDatabase favoritesDatabase, Context context)
+    public AsyncTaskQueryFavorites(KryptoDatabase favoritesDatabase, Context context)
     {
         this.favoritesDatabase = favoritesDatabase;
         this.context = context;

@@ -2,11 +2,11 @@ package p3r5uazn.krypto;
 
 import android.os.AsyncTask;
 
-public class AsyncTaskInsertFavorites extends AsyncTask<KryptoCurrency,Void,Void>
+public class AsyncTaskInsertDatabase extends AsyncTask<KryptoCurrency,Void,Void>
 {
-    FavoritesDatabase favoritesDatabase;
+    KryptoDatabase favoritesDatabase;
 
-    public  AsyncTaskInsertFavorites(FavoritesDatabase fdb)
+    public AsyncTaskInsertDatabase(KryptoDatabase fdb)
     {
         favoritesDatabase = fdb;
     }

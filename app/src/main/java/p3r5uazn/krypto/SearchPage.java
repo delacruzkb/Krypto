@@ -28,7 +28,7 @@ public class SearchPage extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_screen);
-        data = MainActivity.getData();
+        data = new ArrayList<>();
         favorites = new ArrayList<>();
         filteredData = filterData(data, favorites);
 

@@ -1,6 +1,5 @@
 package p3r5uazn.krypto;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -8,13 +7,13 @@ import android.os.AsyncTask;
  * Created by kenso on 3/27/2018.
  */
 
-public class AsyncTaskDeleteFavorites extends AsyncTask<KryptoCurrency,Void,Void>
+public class AsyncTaskDeleteDatabase extends AsyncTask<KryptoCurrency,Void,Void>
 {
-    FavoritesDatabase favoritesDatabase;
+    KryptoDatabase kryptoDatabase;
     Context context;
-    public AsyncTaskDeleteFavorites(FavoritesDatabase fdb, Context context)
+    public AsyncTaskDeleteDatabase(KryptoDatabase fdb, Context context)
     {
-        favoritesDatabase = fdb;
+        kryptoDatabase = fdb;
         this.context = context;
     }
 
@@ -24,7 +23,7 @@ public class AsyncTaskDeleteFavorites extends AsyncTask<KryptoCurrency,Void,Void
         super.onPostExecute(blah);
 
         //update views
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,context);
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(kryptoDatabase,context);
         queryTask.execute();
     }
     @Override
@@ -33,12 +32,12 @@ public class AsyncTaskDeleteFavorites extends AsyncTask<KryptoCurrency,Void,Void
         if(kryptoCurrency[0] == null) // if null passed in
         {
             //Delete everything
-            favoritesDatabase.kryptoCurrencyDao().deleteAllKryptoCurrencies();
+            kryptoDatabase.kryptoCurrencyDao().deleteAllKryptoCurrencies();
         }
         else // if something else passed in
         {
             //Delete it from database
-            favoritesDatabase.kryptoCurrencyDao().removeKryptoCurrency(kryptoCurrency[0]);
+            kryptoDatabase.kryptoCurrencyDao().removeKryptoCurrency(kryptoCurrency[0]);
         }
         return null;
     }
