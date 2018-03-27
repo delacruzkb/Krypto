@@ -63,8 +63,9 @@ public class SearchScreenListAdapter extends BaseAdapter
             {
                 KryptoCurrency temp = mData.remove(position);
                 KryptoDatabase favoritesDatabase = Room.databaseBuilder(mContext, KryptoDatabase.class,"Favorites").build();
-                AsyncTaskInsertDatabase insertTask1 = new AsyncTaskInsertDatabase(favoritesDatabase);
-                insertTask1.execute(temp);
+                AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(favoritesDatabase);
+                insertTask.execute(temp);
+                KryptoDatabase dataDatabase = Room.databaseBuilder(mContext, KryptoDatabase.class,"Data").build();
             }
         });
 

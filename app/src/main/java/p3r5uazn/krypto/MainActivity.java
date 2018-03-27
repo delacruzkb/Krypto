@@ -18,8 +18,6 @@ public class MainActivity extends AppCompatActivity {
     private AutoCompleteTextView searchBar;
     private ListView listView;
     private ImageButton settingsButton;
-    private static ArrayList<KryptoCurrency> data;
-    private static ArrayList<KryptoCurrency> favorites;
     private HomeScreenListAdapter homeScreenListAdapter;
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
     private KryptoDatabase favoritesDatabase;
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Sets up Database
         favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
-        dataDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"data").build();
+        dataDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Data").build();
         /**
          * ToDo
          * 1)make the key in the database class unique and relate to the data itself
@@ -41,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
         clearDatabase(dataDatabase);
 
         //generating test data
-        data = new ArrayList<>();
-        favorites = new ArrayList<>();
         KryptoCurrency test;
         for (int i = 0; i < 20; i++) {
             test = new KryptoCurrency();
@@ -62,12 +58,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
-        //start to update the list
-        refreshScreen();
-
-        //Builds all of the views within the screen and populates them with data
+        //Builds all of the views within the screen with no data
         buildViews();
+        //update the list with data from the database
+        refreshScreen();
     }
 
     //Refresh values when returning from an activity
@@ -86,13 +80,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //Builds all of the views within the screen and populates them with data
+    //Builds all of the views within the screen with no data within them
     private void buildViews()
     {
+        ArrayList<KryptoCurrency> temp = new ArrayList<>();
+
         //Builds search_bar with auto complete
-        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, favorites);
+        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, temp);
         searchBar = findViewById(R.id.search_bar);
         searchBar.setAdapter(searchBarAdapter);
+            //When clicked on an item, remake the listView so that it is the only one present
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -113,14 +110,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(listView.getContext(), SettingsPage.class);
-                startActivityForResult(intent, BACKGROUND_CODE);         // To transfer values of favorites
+                startActivityForResult(intent, BACKGROUND_CODE);
             }
         });
 
 
         //builds the ListView
         listView = findViewById(R.id.currency_list);
-        //when an listing is clicked, go to the item's details page
+            //when an listing is clicked, go to the item's details page
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -130,8 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //updates the list of favorites
-        homeScreenListAdapter = new HomeScreenListAdapter(this, favorites);
+        homeScreenListAdapter = new HomeScreenListAdapter(this, temp);
         listView.setAdapter(homeScreenListAdapter);
 
     }

@@ -18,8 +18,7 @@ import java.util.ArrayList;
 
 public class SettingsPage extends AppCompatActivity
 {
-    public static final int BACKGROUND_CODE = 1;
-    private static ArrayList<KryptoCurrency> favorites;
+    public final int BACKGROUND_CODE = 1;
     private ListView listView;
     private TextView notificationLabel;
     private Switch notificationSwitch;
@@ -27,19 +26,21 @@ public class SettingsPage extends AppCompatActivity
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
     private SettingsScreenListAdapter settingsScreenListAdapter;
     private ImageButton addButton;
-    private KryptoDatabase kryptoDatabase;
+    private KryptoDatabase favoritesDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_screen);
-        kryptoDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
-        favorites = new ArrayList<>();
+        favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
 
         //start to update the list
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(kryptoDatabase,this);
-        queryTask.execute();
+        refreshScreen();
 
+        /**
+         * ToDo
+         * Implement notification function in buildViews
+         * **/
         //Builds all of the views within the screen and populates them with data
         buildViews();
     }
@@ -65,13 +66,14 @@ public class SettingsPage extends AppCompatActivity
     //refreshes the values of the screen
     protected void refreshScreen()
     {
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(kryptoDatabase,this);
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,this);
         queryTask.execute();
     }
 
-    //Builds all of the views within the screen and populates them with data
+    //Builds all of the views within the screen with no data
     private void buildViews()
     {
+        ArrayList<KryptoCurrency> temp = new ArrayList<>();
         //builds notification label and switch
         notificationLabel = findViewById(R.id.notification_label);
         notificationLabel.setText(R.string.switch_off_text);
@@ -114,9 +116,10 @@ public class SettingsPage extends AppCompatActivity
         });
 
         //Builds search_bar with auto complete and populates the search listing
-        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, favorites);
+        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, temp);
         searchBar = findViewById(R.id.settings_search_bar);
         searchBar.setAdapter(searchBarAdapter);
+        //When clicked on an item, remake the listView so that it is the only one present
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
@@ -133,8 +136,7 @@ public class SettingsPage extends AppCompatActivity
 
         //Builds listView
         listView = findViewById(R.id.favorites_list);
-        //updates the list of favorites
-        settingsScreenListAdapter = new SettingsScreenListAdapter(this, favorites);
+        settingsScreenListAdapter = new SettingsScreenListAdapter(this, temp);
         listView.setAdapter(settingsScreenListAdapter);
     }
 }
