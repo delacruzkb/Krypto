@@ -16,9 +16,6 @@ import java.util.ArrayList;
 
 public class SearchPage extends AppCompatActivity
 {
-    private static ArrayList<KryptoCurrency> data;
-    private static ArrayList<KryptoCurrency> filteredData;
-    private static ArrayList<KryptoCurrency> favorites;
     private ListView listView;
     private AutoCompleteTextView searchBar;
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
@@ -29,9 +26,10 @@ public class SearchPage extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_screen);
-        data = new ArrayList<>();
-        favorites = new ArrayList<>();
-        KryptoDatabase database = Room.databaseBuilder(this, KryptoDatabase.class,"Data").build();
+        KryptoDatabase dataDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Data").build();
+        KryptoDatabase favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
+        AsyncTaskQueryFilteredData queryTask = new AsyncTaskQueryFilteredData(dataDatabase,favoritesDatabase,this);
+        queryTask.execute();
         //Builds all of the views within the screen and populates them with data
         buildViews();
     }
@@ -49,8 +47,9 @@ public class SearchPage extends AppCompatActivity
     //Builds all of the views within the screen and populates them with data
     private void buildViews()
     {
+        ArrayList<KryptoCurrency> temp = new ArrayList<>();
         //Builds search_bar with auto complete
-        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, filteredData);
+        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, temp);
         searchBar = findViewById(R.id.add_search_bar);
         searchBar.setAdapter(searchBarAdapter);
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -62,13 +61,13 @@ public class SearchPage extends AppCompatActivity
                 ArrayList<KryptoCurrency> tempSearch = new ArrayList<>();
                 KryptoCurrency selected = (KryptoCurrency) parent.getAdapter().getItem(position);
                 tempSearch.add(selected);
-                searchScreenListAdapter = new SearchScreenListAdapter(view.getContext(), favorites);
+                searchScreenListAdapter = new SearchScreenListAdapter(view.getContext(), tempSearch);
                 listView.setAdapter(searchScreenListAdapter);
             }
         });
 
         //Builds list view
-        searchScreenListAdapter = new SearchScreenListAdapter(this, favorites, data);
+        searchScreenListAdapter = new SearchScreenListAdapter(this, temp);
         listView = findViewById(R.id.data_list);
         listView.setAdapter(searchScreenListAdapter);
     }
