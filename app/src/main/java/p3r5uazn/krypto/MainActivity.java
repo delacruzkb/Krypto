@@ -20,23 +20,14 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton settingsButton;
     private HomeScreenListAdapter homeScreenListAdapter;
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
-    private KryptoDatabase favoritesDatabase;
-    private KryptoDatabase dataDatabase;
+    private KryptoDatabase kryptoDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
 
         //Sets up Database
-        favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
-        dataDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Data").build();
-        /**
-         * ToDo
-         * 1)make the key in the database class unique and relate to the data itself
-         * 2)remove the clearDatabase() method
-         * */
-        clearDatabase(favoritesDatabase);
-        clearDatabase(dataDatabase);
+        kryptoDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Data").build();
 
         //generating test data
         KryptoCurrency test;
@@ -49,13 +40,12 @@ public class MainActivity extends AppCompatActivity {
             }
             test.setPriceUSD(1000000.03 + i);
             test.setPerChange1h(i - 1000.34);
-            AsyncTaskInsertDatabase insertTask1 = new AsyncTaskInsertDatabase(dataDatabase);
-            insertTask1.execute(test);
             if(i % 5 ==0)
             {
-                AsyncTaskInsertDatabase insertTask2 = new AsyncTaskInsertDatabase(favoritesDatabase);
-                insertTask2.execute(test);
+                test.setFavorite(true);
             }
+            AsyncTaskInsertDatabase insertTask1 = new AsyncTaskInsertDatabase(kryptoDatabase);
+            insertTask1.execute(test);
         }
 
         //Builds all of the views within the screen with no data
@@ -75,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     //updates values on all views
     private void refreshScreen()
     {
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,this);
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(kryptoDatabase,this);
         queryTask.execute();
     }
 
@@ -132,10 +122,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void clearDatabase(KryptoDatabase db)
-    {
-        KryptoCurrency temp=null;
-        AsyncTaskDeleteDatabase deleteTask = new AsyncTaskDeleteDatabase(db,this);
-        deleteTask.execute(temp);
-    }
 }

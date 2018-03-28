@@ -1,8 +1,10 @@
 package p3r5uazn.krypto;
 
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
@@ -16,12 +18,15 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
      * ToDo
      * Make key unique and relate to the data
      */
-    @PrimaryKey(autoGenerate = true)
-    private int key;
+    @PrimaryKey @NonNull
+    private String name;
+
+    @ColumnInfo(name = "isFavorite")
+    private boolean isFavorite;
 
     private static final long serialVersionUID = 1L;
 
-    private String name, id, symbol;
+    private String id, symbol;
     private double priceUSD, priceBTC, volume24, marketCap, availableSupply, totalSupply;
     private double threshold, perChange1h, perChange24h, perChange7d, lastUpdated;
     private int rank;
@@ -54,6 +59,7 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
         perChange7d = 0;
         lastUpdated = 0;
         threshold = 1000;
+        isFavorite = false;
     }
     public String getId() {
         return id;
@@ -167,20 +173,20 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
         this.priceUSD = roundToCash(cost);
     }
 
-    public int getKey() {
-        return key;
-    }
-
-    public void setKey(int key) {
-        this.key = key;
-    }
-
     public double getPerChange7d() {
         return perChange7d;
     }
 
     public void setPerChange7d(double perChange7d) {
         this.perChange7d = perChange7d;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     public boolean equals(Object currency)

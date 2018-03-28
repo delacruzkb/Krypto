@@ -20,18 +20,17 @@ public class SearchPage extends AppCompatActivity
     private AutoCompleteTextView searchBar;
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
     private SearchScreenListAdapter searchScreenListAdapter;
-
+    private KryptoDatabase kryptoDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_screen);
-        KryptoDatabase dataDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Data").build();
-        KryptoDatabase favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
-        AsyncTaskQueryFilteredData queryTask = new AsyncTaskQueryFilteredData(dataDatabase,favoritesDatabase,this);
-        queryTask.execute();
+        kryptoDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Data").build();
         //Builds all of the views within the screen and populates them with data
         buildViews();
+        //update the list with data from the database
+        refreshScreen();
     }
 
     //Returns to settings page when finished
@@ -43,7 +42,12 @@ public class SearchPage extends AppCompatActivity
         super.finish();
     }
 
-
+    //updates values on all views
+    private void refreshScreen()
+    {
+        AsyncTaskQueryFilteredData queryTask = new AsyncTaskQueryFilteredData(kryptoDatabase, this);
+        queryTask.execute();
+    }
     //Builds all of the views within the screen and populates them with data
     private void buildViews()
     {
