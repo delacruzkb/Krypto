@@ -11,27 +11,27 @@ import java.util.ArrayList;
 
 public class HomeScreenListAdapter extends BaseAdapter
 {
-    private Context mContext;
+    private Context context;
     private LayoutInflater mLayoutInflater;
-    private ArrayList<KryptoCurrency> mFavorites;
+    private ArrayList<KryptoCurrency> data;
 
-    public HomeScreenListAdapter(Context context, ArrayList<KryptoCurrency> favorites)
+    public HomeScreenListAdapter(Context context, ArrayList<KryptoCurrency> data)
     {
-        mContext =context;
-        mFavorites = favorites;
-        mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.context =context;
+        this.data = data;
+        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount()
     {
-        return mFavorites.size();
+        return data.size();
     }
 
     @Override
     public Object getItem(int position)
     {
-        return mFavorites.get(position);
+        return data.get(position);
     }
 
     @Override

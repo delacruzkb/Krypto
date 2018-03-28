@@ -17,26 +17,28 @@ import java.util.ArrayList;
 
 public class SettingsScreenListAdapter extends BaseAdapter
 {
-    private Context mContext;
+    private Context context;
     private LayoutInflater mLayoutInflater;
-    private ArrayList<KryptoCurrency> mFavorites;
-    public SettingsScreenListAdapter(Context context, ArrayList<KryptoCurrency> favorites)
+    private ArrayList<KryptoCurrency> data;
+    KryptoDatabase kryptoDatabase;
+    public SettingsScreenListAdapter(Context context, ArrayList<KryptoCurrency> data)
     {
-        mContext =context;
-        mFavorites = favorites;
-        mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.context =context;
+        this.data = data;
+        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        kryptoDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Data").build();
     }
 
     @Override
     public int getCount()
     {
-        return mFavorites.size();
+        return data.size();
     }
 
     @Override
     public Object getItem(int position)
     {
-        return mFavorites.get(position);
+        return data.get(position);
     }
 
     @Override
@@ -55,18 +57,22 @@ public class SettingsScreenListAdapter extends BaseAdapter
         TextView currencyName = rowView.findViewById(R.id.currency_name);
         final TextView currencyThreshold = rowView.findViewById(R.id.currency_threshold);
 
-        final KryptoCurrency kryptoCurrency = (KryptoCurrency) getItem(position);
-
+        KryptoCurrency kryptoCurrency = data.get(position);
         ImageButton delete_button = rowView.findViewById(R.id.delete_button);
         delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                KryptoCurrency temp = mFavorites.get(position);
-                KryptoDatabase favoritesDatabase = Room.databaseBuilder(mContext, KryptoDatabase.class,"Favorites").build();
-                AsyncTaskDeleteDatabase deleteTask = new AsyncTaskDeleteDatabase(favoritesDatabase,mContext);
-                deleteTask.execute(temp);
-                notifyDataSetChanged();
+                //update isFavorites
+                KryptoCurrency temp = data.get(position);
+                temp.setFavorite(false);
+                //re-add to database to update value
+                AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(kryptoDatabase);
+                insertTask.execute(temp);
+                //refresh screen
+                AsyncTaskQueryFavorites queryFavorites = new AsyncTaskQueryFavorites(kryptoDatabase,context);
+                queryFavorites.execute();
+
             }
         });
 
@@ -85,9 +91,15 @@ public class SettingsScreenListAdapter extends BaseAdapter
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        kryptoCurrency.setThreshold(Double.parseDouble(userInput.getText().toString()));
-                        currencyThreshold.setText(Double.toString(kryptoCurrency.getThreshold()));
-                        notifyDataSetChanged();
+                        //update Threshold
+                        KryptoCurrency temp = data.get(position);
+                        temp.setThreshold(Double.parseDouble(userInput.getText().toString()));
+                        //re-add to database to update value
+                        AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(kryptoDatabase);
+                        insertTask.execute(temp);
+                        //refresh screen
+                        AsyncTaskQueryFavorites queryFavorites = new AsyncTaskQueryFavorites(kryptoDatabase,context);
+                        queryFavorites.execute();
                     }
                 });
 

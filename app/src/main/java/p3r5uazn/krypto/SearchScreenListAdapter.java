@@ -12,26 +12,28 @@ import java.util.ArrayList;
 
 public class SearchScreenListAdapter extends BaseAdapter
 {
-    private Context mContext;
+    private Context context;
     private LayoutInflater mLayoutInflater;
-    private ArrayList<KryptoCurrency> mData;
+    private ArrayList<KryptoCurrency> data;
+    private KryptoDatabase kryptoDatabase;
     public SearchScreenListAdapter(Context context, ArrayList<KryptoCurrency> data)
     {
-        mContext =context;
-        mData = data;
-        mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.context =context;
+        this.data = data;
+        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        kryptoDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Data").build();
     }
 
     @Override
     public int getCount()
     {
-        return mData.size();
+        return data.size();
     }
 
     @Override
     public Object getItem(int position)
     {
-        return mData.get(position);
+        return data.get(position);
     }
 
     @Override
@@ -61,11 +63,14 @@ public class SearchScreenListAdapter extends BaseAdapter
             @Override
             public void onClick(View v)
             {
-                KryptoCurrency temp = mData.remove(position);
-                KryptoDatabase favoritesDatabase = Room.databaseBuilder(mContext, KryptoDatabase.class,"Favorites").build();
-                AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(favoritesDatabase);
+                KryptoCurrency temp = data.remove(position);
+                temp.setFavorite(true);
+                //re-add to database to update value
+                AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(kryptoDatabase);
                 insertTask.execute(temp);
-                KryptoDatabase dataDatabase = Room.databaseBuilder(mContext, KryptoDatabase.class,"Data").build();
+                //refresh screen
+                AsyncTaskQueryFilteredData queryFavorites = new AsyncTaskQueryFilteredData(kryptoDatabase,context);
+                queryFavorites.execute();
             }
         });
 

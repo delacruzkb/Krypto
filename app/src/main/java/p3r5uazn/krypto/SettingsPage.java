@@ -26,16 +26,13 @@ public class SettingsPage extends AppCompatActivity
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
     private SettingsScreenListAdapter settingsScreenListAdapter;
     private ImageButton addButton;
-    private KryptoDatabase favoritesDatabase;
+    private KryptoDatabase kryptoDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_screen);
-        favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
-
-        //start to update the list
-        refreshScreen();
+        kryptoDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Data").build();
 
         /**
          * ToDo
@@ -43,6 +40,9 @@ public class SettingsPage extends AppCompatActivity
          * **/
         //Builds all of the views within the screen and populates them with data
         buildViews();
+
+        //start to update the list
+        refreshScreen();
     }
 
     //Refresh values when returning from an activity
@@ -66,7 +66,7 @@ public class SettingsPage extends AppCompatActivity
     //refreshes the values of the screen
     protected void refreshScreen()
     {
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,this);
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(kryptoDatabase,this);
         queryTask.execute();
     }
 

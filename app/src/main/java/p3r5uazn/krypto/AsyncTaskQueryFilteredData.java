@@ -17,13 +17,11 @@ import java.util.Collections;
 
 public class AsyncTaskQueryFilteredData extends AsyncTask<Void,Void,ArrayList<KryptoCurrency>>
 {
-    private KryptoDatabase dataDatabase;
-    private KryptoDatabase favoritesDatabase;
+    private KryptoDatabase database;
     private Context context;
 
-    public AsyncTaskQueryFilteredData(KryptoDatabase dataDatabase, KryptoDatabase favoritesDatabase,Context context) {
-        this.dataDatabase = dataDatabase;
-        this.favoritesDatabase = favoritesDatabase;
+    public AsyncTaskQueryFilteredData(KryptoDatabase database,Context context) {
+        this.database = database;
         this.context = context;
     }
 
@@ -45,18 +43,7 @@ public class AsyncTaskQueryFilteredData extends AsyncTask<Void,Void,ArrayList<Kr
     @Override
     protected ArrayList<KryptoCurrency> doInBackground(Void... voids)
     {
-        ArrayList<KryptoCurrency> filteredList = new ArrayList<>();
-        ArrayList<KryptoCurrency> sourceList = (ArrayList<KryptoCurrency>) dataDatabase.kryptoCurrencyDao().getAllKryptoCurrencies();
-        ArrayList<KryptoCurrency> filterOutList = (ArrayList<KryptoCurrency>) favoritesDatabase.kryptoCurrencyDao().getAllKryptoCurrencies();
-
-        for(int i = 0; i< sourceList.size(); i++)
-        {
-            if(!filterOutList.contains(sourceList.get(i)))
-            {
-                filteredList.add(sourceList.get(i));
-            }
-        }
-
-        return filteredList;
+        //return list of non-favorites from database
+        return (ArrayList<KryptoCurrency>) database.kryptoCurrencyDao().getAllFavorites(false);
     }
 }
