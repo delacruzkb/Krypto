@@ -14,10 +14,7 @@ import java.io.Serializable;
 @Entity
 public class KryptoCurrency implements Serializable, Comparable<Object>
 {
-    /***
-     * ToDo
-     * Make key unique and relate to the data
-     */
+
     @PrimaryKey @NonNull
     private String name;
 
