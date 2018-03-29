@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
-
         //Sets up Database
         kryptoDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Data").build();
         favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
