@@ -16,12 +16,14 @@ public class SearchScreenListAdapter extends BaseAdapter
     private LayoutInflater mLayoutInflater;
     private ArrayList<KryptoCurrency> data;
     private KryptoDatabase kryptoDatabase;
+    private KryptoDatabase favoritesDatabase;
     public SearchScreenListAdapter(Context context, ArrayList<KryptoCurrency> data)
     {
         this.context =context;
         this.data = data;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         kryptoDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Data").build();
+        favoritesDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Favorites").build();
     }
 
     @Override
@@ -63,13 +65,12 @@ public class SearchScreenListAdapter extends BaseAdapter
             @Override
             public void onClick(View v)
             {
-                KryptoCurrency temp = data.remove(position);
-                temp.setFavorite(true);
+                KryptoCurrency temp = data.remove(position);;
                 //re-add to database to update value
-                AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(kryptoDatabase);
+                AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(favoritesDatabase);
                 insertTask.execute(temp);
                 //refresh screen
-                AsyncTaskQueryFilteredData queryFavorites = new AsyncTaskQueryFilteredData(kryptoDatabase,context);
+                AsyncTaskQueryFilteredData queryFavorites = new AsyncTaskQueryFilteredData(kryptoDatabase, favoritesDatabase,context);
                 queryFavorites.execute();
             }
         });
