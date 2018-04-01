@@ -20,6 +20,7 @@ public class SettingsScreenListAdapter extends BaseAdapter
     private Context context;
     private LayoutInflater mLayoutInflater;
     private ArrayList<KryptoCurrency> data;
+    KryptoDatabase database;
     KryptoDatabase favoritesDatabase;
     public SettingsScreenListAdapter(Context context, ArrayList<KryptoCurrency> data)
     {
@@ -27,6 +28,7 @@ public class SettingsScreenListAdapter extends BaseAdapter
         this.data = data;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         favoritesDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Favorites").build();
+        database = Room.databaseBuilder(context, KryptoDatabase.class,"Data").build();
     }
 
     @Override
@@ -95,8 +97,10 @@ public class SettingsScreenListAdapter extends BaseAdapter
                         KryptoCurrency temp = data.get(position);
                         temp.setThreshold(Double.parseDouble(userInput.getText().toString()));
                         //re-add to database to update value
-                        AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(favoritesDatabase);
-                        insertTask.execute(temp);
+                        AsyncTaskInsertDatabase insertTask1 = new AsyncTaskInsertDatabase(favoritesDatabase);
+                        insertTask1.execute(temp);
+                        AsyncTaskInsertDatabase insertTask2 = new AsyncTaskInsertDatabase(database);
+                        insertTask2.execute(temp);
                         //refresh screen
                         AsyncTaskQueryFavorites queryFavorites = new AsyncTaskQueryFavorites(favoritesDatabase,context);
                         queryFavorites.execute();
