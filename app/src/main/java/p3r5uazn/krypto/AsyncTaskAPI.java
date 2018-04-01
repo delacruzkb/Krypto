@@ -11,12 +11,7 @@ import java.util.ArrayList;
  */
 
 public class AsyncTaskAPI extends AsyncTask<Void, Void, Void> {
-    private KryptoDatabase database;
-    private Context context;
-    public AsyncTaskAPI(KryptoDatabase database, Context context){
-        this.database = database;
-        this.context = context;
-    }
+
 
     @Override
     protected void onPostExecute(Void aVoid) {
