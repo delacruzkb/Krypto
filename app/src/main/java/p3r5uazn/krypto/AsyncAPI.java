@@ -57,7 +57,7 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
         if(!result.equals("")){
             ArrayList<String> list = new ArrayList<>();
             try{
-                JSONArray jsonArray = new JSONArray(s);
+                JSONArray jsonArray = new JSONArray(result);
                 for(int i = 0; i < jsonArray.length(); ++i){
                     list.add(jsonArray.get(i).toString());
                 }
