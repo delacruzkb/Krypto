@@ -27,7 +27,6 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStreamReader isr = new InputStreamReader(urlConnection.getInputStream());
             BufferedReader in = new BufferedReader(isr);
-            jsonStr = "";
             while((jsonStr = in.readLine()) != null){
                 result += jsonStr;
             }
