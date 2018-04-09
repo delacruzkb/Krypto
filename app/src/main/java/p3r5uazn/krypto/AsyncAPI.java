@@ -21,12 +21,16 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
         URL url;
         HttpURLConnection urlConnection = null;
         String jsonStr = null;
+        String result = "";
         try{
             url = new URL("https://api.coinmarketcap.com/v1/ticker/");
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStreamReader isr = new InputStreamReader(urlConnection.getInputStream());
             BufferedReader in = new BufferedReader(isr);
-            jsonStr = in.readLine();
+            jsonStr = "";
+            while((jsonStr = in.readLine()) != null){
+                result += jsonStr;
+            }
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -34,7 +38,7 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
                 urlConnection.disconnect();
             }
         }
-        return jsonStr;
+        return result;
     }
 
     //parses through string and put in json array.
