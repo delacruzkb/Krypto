@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -54,13 +55,21 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        ArrayList<KryptoCurrency> kryptos = new ArrayList<>();
         if(!result.equals("")){
-            ArrayList<String> list = new ArrayList<>();
+            ArrayList<JSONObject> list = new ArrayList<>();
             try{
                 JSONArray jsonArray = new JSONArray(result);
                 for(int i = 0; i < jsonArray.length(); ++i){
-                    list.add(jsonArray.get(i).toString());
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    list.add(jsonObject);
                 }
+                for(int i = 0; i < list.size(); i++){
+                    KryptoCurrency kryptoCurrency = new KryptoCurrency();
+                    kryptoCurrency.setId(list.get(i).getString("id"));
+                    kryptoCurrency.setName(list.get(i).getString("name"));
+                }
+
             }catch (Exception e){
                 e.printStackTrace();
             }
