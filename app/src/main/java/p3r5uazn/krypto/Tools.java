@@ -13,6 +13,8 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class Tools {
 
+    //some tools for you guys to use if you want.
+
     @SuppressWarnings("ConstantConditions")
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager =

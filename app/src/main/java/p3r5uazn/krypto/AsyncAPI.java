@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -22,18 +23,27 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
         HttpURLConnection urlConnection = null;
         String jsonStr = null;
         String result = "";
+        InputStreamReader isr = null;
         try{
             url = new URL("https://api.coinmarketcap.com/v1/ticker/");
             urlConnection = (HttpURLConnection) url.openConnection();
-            InputStreamReader isr = new InputStreamReader(urlConnection.getInputStream());
+            isr = new InputStreamReader(urlConnection.getInputStream());
             BufferedReader in = new BufferedReader(isr);
             while((jsonStr = in.readLine()) != null){
                 result += jsonStr;
             }
         }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            if(urlConnection != null ){
+        }
+        finally {
+            if(isr != null){
+                try{
+                    isr.close();
+                }catch (IOException x){
+                    x.printStackTrace();
+                }
+            }
+            if(urlConnection != null){
                 urlConnection.disconnect();
             }
         }
@@ -42,9 +52,9 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
 
     //parses through string and put in json array.
     @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
-        if(!s.equals("")){
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+        if(!result.equals("")){
             ArrayList<String> list = new ArrayList<>();
             try{
                 JSONArray jsonArray = new JSONArray(s);
