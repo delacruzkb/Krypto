@@ -4,9 +4,27 @@ package p3r5uazn.krypto;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.view.View;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kenso on 2/26/2018.
@@ -30,7 +48,7 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
     private double priceUSD, priceBTC, volume24, marketCap, availableSupply, totalSupply;
     private double threshold, perChange1h, perChange24h, perChange7d, lastUpdated;
     private int rank;
-
+    private Context context;
 
     public double getThreshold() {
         return threshold;
@@ -39,7 +57,6 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
     public void setThreshold(double threshold) {
         this.threshold = roundToCash(threshold);
     }
-
 
 
     public KryptoCurrency()
