@@ -21,17 +21,19 @@ public class MainActivity extends AppCompatActivity {
     private HomeScreenListAdapter homeScreenListAdapter;
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
     private KryptoDatabase kryptoDatabase;
+    private KryptoDatabase favoritesDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
-
         //Sets up Database
         kryptoDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Data").build();
-
+        favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
         //generating test data
         KryptoCurrency test;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 20; i++)
+        {
+
             test = new KryptoCurrency();
             if (i % 2 == 0) {
                 test.setName("Even test #" + i);
@@ -42,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
             test.setPerChange1h(i - 1000.34);
             if(i % 5 ==0)
             {
-                test.setFavorite(true);
+                AsyncTaskInsertDatabase insertTask2 = new AsyncTaskInsertDatabase(favoritesDatabase);
+                insertTask2.execute(test);
             }
             AsyncTaskInsertDatabase insertTask1 = new AsyncTaskInsertDatabase(kryptoDatabase);
             insertTask1.execute(test);
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     //updates values on all views
     private void refreshScreen()
     {
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(kryptoDatabase,this);
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,this);
         queryTask.execute();
     }
 

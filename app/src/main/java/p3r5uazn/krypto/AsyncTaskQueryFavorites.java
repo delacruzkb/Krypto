@@ -66,6 +66,6 @@ public class AsyncTaskQueryFavorites extends AsyncTask<Void,Void,ArrayList<Krypt
     protected ArrayList<KryptoCurrency> doInBackground(Void... voids)
     {
         //return list of favorites from database
-        return (ArrayList<KryptoCurrency>) favoritesDatabase.kryptoCurrencyDao().getAllFavorites(true);
+        return (ArrayList<KryptoCurrency>) favoritesDatabase.kryptoCurrencyDao().getAllKryptoCurrencies();
     }
 }
