@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         buildViews();
         //update the list with data from the database
         refreshScreen();
+
+        
     }
 
     //Refresh values when returning from an activity

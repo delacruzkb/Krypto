@@ -14,7 +14,10 @@ import java.io.Serializable;
 @Entity
 public class KryptoCurrency implements Serializable, Comparable<Object>
 {
-
+    /***
+     * ToDo
+     * Make key unique and relate to the data
+     */
     @PrimaryKey @NonNull
     private String name;
 
@@ -27,7 +30,7 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
     private double priceUSD, priceBTC, volume24, marketCap, availableSupply, totalSupply;
     private double threshold, perChange1h, perChange24h, perChange7d, lastUpdated;
     private int rank;
-
+    //private Context context;
 
     public double getThreshold() {
         return threshold;
@@ -36,7 +39,6 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
     public void setThreshold(double threshold) {
         this.threshold = roundToCash(threshold);
     }
-
 
 
     public KryptoCurrency()
