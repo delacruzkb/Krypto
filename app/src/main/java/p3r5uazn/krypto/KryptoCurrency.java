@@ -48,7 +48,7 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
     private double priceUSD, priceBTC, volume24, marketCap, availableSupply, totalSupply;
     private double threshold, perChange1h, perChange24h, perChange7d, lastUpdated;
     private int rank;
-    private Context context;
+    //private Context context;
 
     public double getThreshold() {
         return threshold;
@@ -150,11 +150,11 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
         this.perChange24h = perChange24h;
     }
 
-    public double getPerchange7d() {
+    public double getPerChange7d() {
         return perChange7d;
     }
 
-    public void setPerchange7d(double perChange7d) {
+    public void setPerChange7d(double perChange7d) {
         this.perChange7d = perChange7d;
     }
 
@@ -188,14 +188,6 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
 
     public void setPriceUSD(double cost) {
         this.priceUSD = roundToCash(cost);
-    }
-
-    public double getPerChange7d() {
-        return perChange7d;
-    }
-
-    public void setPerChange7d(double perChange7d) {
-        this.perChange7d = perChange7d;
     }
 
     public boolean isFavorite() {
