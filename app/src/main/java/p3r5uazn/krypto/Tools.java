@@ -8,7 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-
+/*
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class Tools {
@@ -42,4 +42,4 @@ public class Tools {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-}
+}*/

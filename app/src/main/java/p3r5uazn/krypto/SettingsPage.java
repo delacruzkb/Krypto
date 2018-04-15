@@ -35,8 +35,7 @@ public class SettingsPage extends AppCompatActivity
         favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
 
         /**
-         * ToDo
-         * Implement notification function in buildViews
+         * ToDo Implement notification function in buildViews
          * **/
         //Builds all of the views within the screen and populates them with data
         buildViews();

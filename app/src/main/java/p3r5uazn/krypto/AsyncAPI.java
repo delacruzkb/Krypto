@@ -1,5 +1,6 @@
 package p3r5uazn.krypto;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -10,13 +11,16 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class AsyncAPI extends AsyncTask<Void, Void, String> {
-
+public class AsyncAPI extends AsyncTask<Void, Void, String>
+{
+    Context context;
+    public AsyncAPI(Context context) {
+        this.context = context;
+    }
 
     //returns a string of the json response
     //execute wherever. i executed in MainActivity for test purposes
@@ -86,31 +90,8 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
         }
         Log.e("RESULT TEXT",result);
         System.out.println(result);
-        //if (returnedJsonString.get("z")){
-
-
-
-
-        /*
-        ArrayList<KryptoCurrency> kryptos = new ArrayList<>();
-        if(!result.equals("")){
-            ArrayList<JSONObject> list = new ArrayList<>();
-            try{
-                JSONArray jsonArray = new JSONArray(result);
-                for(int i = 0; i < jsonArray.length(); ++i){
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    list.add(jsonObject);
-                }
-                for(int i = 0; i < list.size(); i++){
-                    KryptoCurrency kryptoCurrency = new KryptoCurrency();
-                    kryptoCurrency.setId(list.get(i).getString("id"));
-                    kryptoCurrency.setName(list.get(i).getString("name"));
-                }
-
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        */
+        System.out.println(kryptos.size());
+        AsyncTaskQueryFilteredData asyncTaskQueryFilteredData = new AsyncTaskQueryFilteredData(context, kryptos);
+        asyncTaskQueryFilteredData.execute();
     }
 }
