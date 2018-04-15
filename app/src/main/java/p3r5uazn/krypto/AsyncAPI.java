@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+
 public class AsyncAPI extends AsyncTask<Void, Void, String>
 {
     Context context;
@@ -79,6 +80,7 @@ public class AsyncAPI extends AsyncTask<Void, Void, String>
                 krypto.setMarketCap(Double.parseDouble(jsonObject.getString("market_cap_usd")));
                 krypto.setAvailableSupply(Double.parseDouble(jsonObject.getString("available_supply")));
                 krypto.setTotalSupply(Double.parseDouble(jsonObject.getString("total_supply")));
+                krypto.setMaxSupply(Double.parseDouble(jsonObject.getString("max_supply")));
                 krypto.setPerChange1h(Double.parseDouble(jsonObject.getString("percent_change_1h")));
                 krypto.setPerChange24h(Double.parseDouble(jsonObject.getString("percent_change_24h")));
                 krypto.setPerChange7d(Double.parseDouble(jsonObject.getString("percent_change_7d")));
@@ -93,5 +95,6 @@ public class AsyncAPI extends AsyncTask<Void, Void, String>
         System.out.println(kryptos.size());
         AsyncTaskQueryFilteredData asyncTaskQueryFilteredData = new AsyncTaskQueryFilteredData(context, kryptos);
         asyncTaskQueryFilteredData.execute();
+
     }
 }

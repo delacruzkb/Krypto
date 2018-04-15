@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         buildViews();
         //update the list with data from the database
         refreshScreen();
+        AsyncAPI asyncAPI = new AsyncAPI();
+        asyncAPI.execute();
         
     }
 
