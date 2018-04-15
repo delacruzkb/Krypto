@@ -2,6 +2,7 @@ package p3r5uazn.krypto;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**

@@ -19,6 +19,7 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
 
 
     //returns a string of the json response
+    //execute wherever. i executed in MainActivity for test purposes
     @Override
     protected String doInBackground(Void...voids) {
         URL url;
@@ -38,14 +39,14 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
             e.printStackTrace();
         }
         finally {
-            if(isr != null){
+            if(isr == null){
                 try{
                     isr.close();
                 }catch (IOException x){
                     x.printStackTrace();
                 }
             }
-            if(urlConnection != null){
+            if(urlConnection == null){
                 urlConnection.disconnect();
             }
         }
@@ -56,6 +57,41 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        JSONArray returnedJsonString = null;
+        ArrayList<KryptoCurrency> kryptos = null;
+        try {
+            returnedJsonString = new JSONArray(result) ;
+            kryptos = new ArrayList<>();
+            for(int i = 0; i < returnedJsonString.length(); ++i){
+                KryptoCurrency krypto = new KryptoCurrency();
+                JSONObject jsonObject = returnedJsonString.getJSONObject(i);
+                krypto.setId(jsonObject.getString("id"));
+                krypto.setName(jsonObject.getString("name"));
+                krypto.setSymbol(jsonObject.getString("symbol"));
+                krypto.setRank((Integer.parseInt(jsonObject.getString("rank"))));
+                krypto.setPriceUSD(Double.parseDouble(jsonObject.getString("price_usd")));
+                krypto.setPriceBTC(Double.parseDouble(jsonObject.getString("price_btc")));
+                krypto.setVolume24(Double.parseDouble(jsonObject.getString("24_volume_usd")));
+                krypto.setMarketCap(Double.parseDouble(jsonObject.getString("market_cap_usd")));
+                krypto.setAvailableSupply(Double.parseDouble(jsonObject.getString("available_supply")));
+                krypto.setTotalSupply(Double.parseDouble(jsonObject.getString("total_supply")));
+                krypto.setPerChange1h(Double.parseDouble(jsonObject.getString("percent_change_1h")));
+                krypto.setPerChange24h(Double.parseDouble(jsonObject.getString("percent_change_24h")));
+                krypto.setPerChange7d(Double.parseDouble(jsonObject.getString("percent_change_7d")));
+                krypto.setLastUpdated(Double.parseDouble(jsonObject.getString("last_updated")));
+                kryptos.add(krypto);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.e("RESULT TEXT",result);
+        System.out.println(result);
+        //if (returnedJsonString.get("z")){
+
+
+
+
+        /*
         ArrayList<KryptoCurrency> kryptos = new ArrayList<>();
         if(!result.equals("")){
             ArrayList<JSONObject> list = new ArrayList<>();
@@ -69,12 +105,12 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
                     KryptoCurrency kryptoCurrency = new KryptoCurrency();
                     kryptoCurrency.setId(list.get(i).getString("id"));
                     kryptoCurrency.setName(list.get(i).getString("name"));
-                    Log.i("id", kryptoCurrency.getId());
                 }
 
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
+        */
     }
 }
