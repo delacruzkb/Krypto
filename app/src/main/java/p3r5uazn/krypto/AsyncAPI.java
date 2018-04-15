@@ -19,6 +19,7 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
 
 
     //returns a string of the json response
+    //execute wherever. i executed in MainActivity for test purposes
     @Override
     protected String doInBackground(Void...voids) {
         URL url;
