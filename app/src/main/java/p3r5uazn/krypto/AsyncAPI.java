@@ -1,5 +1,6 @@
 package p3r5uazn.krypto;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -10,12 +11,18 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class AsyncAPI extends AsyncTask<Void, Void, String> {
+
+public class AsyncAPI extends AsyncTask<Void, Void, String>
+{
+    Context context;
+    public AsyncAPI(Context context) {
+        this.context = context;
+    }
+
     //returns a string of the json response
     //execute wherever. i executed in MainActivity for test purposes
     @Override
@@ -85,5 +92,9 @@ public class AsyncAPI extends AsyncTask<Void, Void, String> {
         }
         Log.e("RESULT TEXT",result);
         System.out.println(result);
+        System.out.println(kryptos.size());
+        AsyncTaskQueryFilteredData asyncTaskQueryFilteredData = new AsyncTaskQueryFilteredData(context, kryptos);
+        asyncTaskQueryFilteredData.execute();
+
     }
 }

@@ -15,14 +15,12 @@ public class SearchScreenListAdapter extends BaseAdapter
     private Context context;
     private LayoutInflater mLayoutInflater;
     private ArrayList<KryptoCurrency> data;
-    private KryptoDatabase kryptoDatabase;
     private KryptoDatabase favoritesDatabase;
     public SearchScreenListAdapter(Context context, ArrayList<KryptoCurrency> data)
     {
         this.context =context;
         this.data = data;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        kryptoDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Data").build();
         favoritesDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Favorites").build();
     }
 
@@ -70,8 +68,8 @@ public class SearchScreenListAdapter extends BaseAdapter
                 AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(favoritesDatabase);
                 insertTask.execute(temp);
                 //refresh screen
-                AsyncTaskQueryFilteredData queryFavorites = new AsyncTaskQueryFilteredData(kryptoDatabase, favoritesDatabase,context);
-                queryFavorites.execute();
+                AsyncAPI asyncAPI = new AsyncAPI(context);
+                asyncAPI.execute();
             }
         });
 

@@ -1,8 +1,5 @@
 package p3r5uazn.krypto;
 
-import android.app.Activity;
-import android.arch.persistence.room.Room;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,15 +17,11 @@ public class SearchPage extends AppCompatActivity
     private AutoCompleteTextView searchBar;
     private ArrayAdapter<KryptoCurrency> searchBarAdapter;
     private SearchScreenListAdapter searchScreenListAdapter;
-    private KryptoDatabase kryptoDatabase;
-    private KryptoDatabase favoritesDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_screen);
-        kryptoDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Data").build();
-        favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
         //Builds all of the views within the screen and populates them with data
         buildViews();
         //update the list with data from the database
@@ -47,8 +40,8 @@ public class SearchPage extends AppCompatActivity
     //updates values on all views
     private void refreshScreen()
     {
-        AsyncTaskQueryFilteredData queryTask = new AsyncTaskQueryFilteredData(kryptoDatabase, favoritesDatabase,this);
-        queryTask.execute();
+        AsyncAPI asyncAPI = new AsyncAPI(this);
+        asyncAPI.execute();
     }
     //Builds all of the views within the screen and populates them with data
     private void buildViews()

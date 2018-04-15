@@ -1,6 +1,7 @@
 package p3r5uazn.krypto;
 
 import android.app.Activity;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
@@ -17,14 +18,14 @@ import java.util.Collections;
 
 public class AsyncTaskQueryFilteredData extends AsyncTask<Void,Void,ArrayList<KryptoCurrency>>
 {
-    private KryptoDatabase database;
+    private ArrayList<KryptoCurrency> data;
     private KryptoDatabase favoritesDatabase;
     private Context context;
 
-    public AsyncTaskQueryFilteredData(KryptoDatabase database,KryptoDatabase favoritesDatabase, Context context) {
-        this.database = database;
+    public AsyncTaskQueryFilteredData( Context context, ArrayList<KryptoCurrency> data) {
+        this.data = data;
         this.context = context;
-        this.favoritesDatabase = favoritesDatabase;
+        this.favoritesDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Favorites").build();
     }
 
     @Override
@@ -47,7 +48,6 @@ public class AsyncTaskQueryFilteredData extends AsyncTask<Void,Void,ArrayList<Kr
     {
         //return list of non-favorites from database
         ArrayList<KryptoCurrency> returnValue= new ArrayList<>();
-        ArrayList<KryptoCurrency> data = (ArrayList<KryptoCurrency>) database.kryptoCurrencyDao().getAllKryptoCurrencies();
         ArrayList<KryptoCurrency> favorites = (ArrayList<KryptoCurrency>) favoritesDatabase.kryptoCurrencyDao().getAllKryptoCurrencies();
         for (int i =0; i < data.size(); i++)
         {
