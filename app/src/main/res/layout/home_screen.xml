@@ -12,7 +12,7 @@
         android:id="@+id/krypto_logo"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        app:srcCompat="@drawable/krypto_white" />
+        app:srcCompat="@drawable/krypto_blue" />
 
     <TableRow
         android:layout_width="match_parent"
@@ -26,7 +26,10 @@
             android:layout_height="wrap_content"
             android:completionHint="Search . . ."
             android:completionThreshold="1"
-            android:textColor="@color/text" />
+            android:textColor="@color/text"
+            android:inputType="text"
+            android:background="#2e3037"
+            android:maxLines="1"/>
 
         <ImageButton
             android:id="@+id/settings_button"

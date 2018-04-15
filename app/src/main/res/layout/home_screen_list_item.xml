@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="BitCoin"
         android:textAlignment="viewStart"
-        android:textColor="@color/text"
+        android:textColor="@color/colorAccent"
         android:textSize="20sp"
         android:textStyle="bold" />
 

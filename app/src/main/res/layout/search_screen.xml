@@ -21,7 +21,9 @@
         android:layout_height="wrap_content"
         android:completionHint="Search . . ."
         android:completionThreshold="1"
-        android:textColor="@color/text" />
+        android:textColor="@color/text"
+        android:inputType="text"
+        android:maxLines="1"/>
 
     <ListView
         android:id="@+id/data_list"
