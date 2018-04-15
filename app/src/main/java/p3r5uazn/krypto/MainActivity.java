@@ -3,7 +3,6 @@ package p3r5uazn.krypto;
 import android.app.Activity;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -56,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         buildViews();
         //update the list with data from the database
         refreshScreen();
-        AsyncAPI asyncAPI = new AsyncAPI();
-        asyncAPI.execute();
+
+        
     }
 
     //Refresh values when returning from an activity
