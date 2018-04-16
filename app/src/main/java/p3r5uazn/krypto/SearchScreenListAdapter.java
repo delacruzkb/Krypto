@@ -68,8 +68,8 @@ public class SearchScreenListAdapter extends BaseAdapter
                 AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(favoritesDatabase);
                 insertTask.execute(temp);
                 //refresh screen
-                AsyncAPI asyncAPI = new AsyncAPI(context);
-                asyncAPI.execute();
+                AsyncTaskQueryFilteredData refreshTask = new AsyncTaskQueryFilteredData(context, data);
+                refreshTask.execute();
             }
         });
 
