@@ -66,6 +66,7 @@ public class AsyncAPI extends AsyncTask<Void, Void, String>
         ArrayList<KryptoCurrency> kryptos = null;
         try {
             returnedJsonString = new JSONArray(result) ;
+
             kryptos = new ArrayList<>();
             for(int i = 0; i < returnedJsonString.length(); ++i){
                 KryptoCurrency krypto = new KryptoCurrency();
@@ -75,16 +76,87 @@ public class AsyncAPI extends AsyncTask<Void, Void, String>
                 krypto.setSymbol(jsonObject.getString("symbol"));
                 krypto.setRank((Integer.parseInt(jsonObject.getString("rank"))));
                 krypto.setPriceUSD(Double.parseDouble(jsonObject.getString("price_usd")));
-                krypto.setPriceBTC(Double.parseDouble(jsonObject.getString("price_btc")));
-                krypto.setVolume24(Double.parseDouble(jsonObject.getString("24_volume_usd")));
-                krypto.setMarketCap(Double.parseDouble(jsonObject.getString("market_cap_usd")));
-                krypto.setAvailableSupply(Double.parseDouble(jsonObject.getString("available_supply")));
-                krypto.setTotalSupply(Double.parseDouble(jsonObject.getString("total_supply")));
-                krypto.setMaxSupply(Double.parseDouble(jsonObject.getString("max_supply")));
-                krypto.setPerChange1h(Double.parseDouble(jsonObject.getString("percent_change_1h")));
-                krypto.setPerChange24h(Double.parseDouble(jsonObject.getString("percent_change_24h")));
-                krypto.setPerChange7d(Double.parseDouble(jsonObject.getString("percent_change_7d")));
-                krypto.setLastUpdated(Double.parseDouble(jsonObject.getString("last_updated")));
+
+                try
+                {
+                    krypto.setPriceBTC(Double.parseDouble(jsonObject.getString("price_btc")));
+                }
+                catch (Exception e)
+                {
+                    // Field did not exist
+                }
+                try
+                {
+                    krypto.setVolume24(Double.parseDouble(jsonObject.getString("24_volume_usd")));
+                }
+                catch (Exception e)
+                {
+                    // Field did not exist
+                }
+                try
+                {
+                    krypto.setMarketCap(Double.parseDouble(jsonObject.getString("market_cap_usd")));
+                }
+                catch (Exception e)
+                {
+                    // Field did not exist
+                }
+                try
+                {
+                    krypto.setAvailableSupply(Double.parseDouble(jsonObject.getString("available_supply")));
+                }
+                catch (Exception e)
+                {
+                    // Field did not exist
+                }
+                try
+                {
+                    krypto.setTotalSupply(Double.parseDouble(jsonObject.getString("total_supply")));
+                }
+                catch (Exception e)
+                {
+                    // Field did not exist
+                }
+                try
+                {
+                    krypto.setMaxSupply(Double.parseDouble(jsonObject.getString("max_supply")));
+                }
+                catch (Exception e)
+                {
+                    // Field did not exist
+                }
+                try
+                {
+                    krypto.setPerChange1h(Double.parseDouble(jsonObject.getString("percent_change_1h")));
+                }
+                catch (Exception e)
+                {
+                    // Field did not exist
+                }
+                try
+                {
+                    krypto.setPerChange24h(Double.parseDouble(jsonObject.getString("percent_change_24h")));
+                }
+                catch (Exception e)
+                {
+                    // Field did not exist
+                }
+                try
+                {
+                    krypto.setPerChange7d(Double.parseDouble(jsonObject.getString("percent_change_7d")));
+                }
+                catch (Exception e)
+                {
+                    // Field did not exist
+                }
+                try
+                {
+                    krypto.setLastUpdated(Double.parseDouble(jsonObject.getString("last_updated")));
+                }
+                catch (Exception e)
+                {
+                    // Field did not exist
+                }
                 kryptos.add(krypto);
             }
         } catch (JSONException e) {
