@@ -37,7 +37,7 @@ public class SearchPage extends AppCompatActivity
         super.finish();
     }
 
-    //updates values on all views
+    //pulls from the website and updates values
     private void refreshScreen()
     {
         AsyncAPI asyncAPI = new AsyncAPI(this);
