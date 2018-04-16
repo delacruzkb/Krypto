@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -67,12 +68,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                searchBar.setText("");
-                ArrayList<KryptoCurrency> tempSearch = new ArrayList<>();
-                KryptoCurrency selected = (KryptoCurrency) parent.getAdapter().getItem(position);
-                tempSearch.add(selected);
-                homeScreenListAdapter = new HomeScreenListAdapter(view.getContext(), tempSearch);
-                listView.setAdapter(homeScreenListAdapter);
+                String keyWord = ((KryptoCurrency) parent.getAdapter().getItem(position)).toString();
+                AsyncTaskCustomSearch customSearch = new AsyncTaskCustomSearch(searchBar.getContext(),keyWord);
+                customSearch.execute();
+            }
+        });
+            //When pressing enter, remake the listView so that any krypto that contains the keyword in it's name is shown
+        searchBar.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if(event.getKeyCode()==KeyEvent.KEYCODE_ENTER)
+                {
+                    String keyWord = searchBar.getText().toString();
+                    AsyncTaskCustomSearch customSearch = new AsyncTaskCustomSearch(searchBar.getContext(),keyWord);
+                    customSearch.execute();
+                }
+                return false;
             }
         });
 

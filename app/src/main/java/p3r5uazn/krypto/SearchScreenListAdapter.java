@@ -68,11 +68,16 @@ public class SearchScreenListAdapter extends BaseAdapter
                 AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(favoritesDatabase);
                 insertTask.execute(temp);
                 //refresh screen
-                AsyncAPI asyncAPI = new AsyncAPI(context);
-                asyncAPI.execute();
+                AsyncAPI refreshTask = new AsyncAPI(context);
+                refreshTask.execute();
             }
         });
 
         return rowView;
+    }
+
+    public ArrayList<KryptoCurrency> getData()
+    {
+        return data;
     }
 }
