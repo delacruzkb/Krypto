@@ -3,6 +3,7 @@ package p3r5uazn.krypto;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -37,7 +38,7 @@ public class SearchPage extends AppCompatActivity
         super.finish();
     }
 
-    //updates values on all views
+    //pulls from the website and updates values
     private void refreshScreen()
     {
         AsyncAPI asyncAPI = new AsyncAPI(this);
@@ -51,8 +52,7 @@ public class SearchPage extends AppCompatActivity
         searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, temp);
         searchBar = findViewById(R.id.add_search_bar);
         searchBar.setAdapter(searchBarAdapter);
-        searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {

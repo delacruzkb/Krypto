@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -119,17 +120,27 @@ public class SettingsPage extends AppCompatActivity
         searchBar = findViewById(R.id.settings_search_bar);
         searchBar.setAdapter(searchBarAdapter);
         //When clicked on an item, remake the listView so that it is the only one present
-        searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                searchBar.setText("");
-                ArrayList<KryptoCurrency> tempSearch = new ArrayList<>();
-                KryptoCurrency selected = (KryptoCurrency) parent.getAdapter().getItem(position);
-                tempSearch.add(selected);
-                settingsScreenListAdapter = new SettingsScreenListAdapter(view.getContext(), tempSearch);
-                listView.setAdapter(settingsScreenListAdapter);
+                String keyWord = ((KryptoCurrency) parent.getAdapter().getItem(position)).toString();
+                AsyncTaskCustomSearch customSearch = new AsyncTaskCustomSearch(searchBar.getContext(),keyWord);
+                customSearch.execute();
+            }
+        });
+        //When pressing enter, remake the listView so that any krypto that contains the keyword in it's name is shown
+        searchBar.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if(event.getKeyCode()==KeyEvent.KEYCODE_ENTER)
+                {
+                    String keyWord = searchBar.getText().toString();
+                    AsyncTaskCustomSearch customSearch = new AsyncTaskCustomSearch(searchBar.getContext(),keyWord);
+                    customSearch.execute();
+                }
+                return false;
             }
         });
 
