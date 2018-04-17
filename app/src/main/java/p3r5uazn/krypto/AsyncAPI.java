@@ -71,11 +71,26 @@ public class AsyncAPI extends AsyncTask<Void, Void, String>
             for(int i = 0; i < returnedJsonString.length(); ++i){
                 KryptoCurrency krypto = new KryptoCurrency();
                 JSONObject jsonObject = returnedJsonString.getJSONObject(i);
-                krypto.setId(jsonObject.getString("id"));
-                krypto.setName(jsonObject.getString("name"));
-                krypto.setSymbol(jsonObject.getString("symbol"));
-                krypto.setRank((Integer.parseInt(jsonObject.getString("rank"))));
-                krypto.setPriceUSD(Double.parseDouble(jsonObject.getString("price_usd")));
+                try{
+                    krypto.setId(jsonObject.getString("id"));
+                }catch (Exception e){}
+                try
+                {
+                    krypto.setName(jsonObject.getString("name"));
+                } catch (Exception e){}
+
+                try
+                {
+                    krypto.setSymbol(jsonObject.getString("symbol"));
+                }catch(Exception e){}
+                try
+                {
+                    krypto.setRank((Integer.parseInt(jsonObject.getString("rank"))));
+                }catch(Exception e){}
+                try
+                {
+                    krypto.setPriceUSD(Double.parseDouble(jsonObject.getString("price_usd")));
+                }catch(Exception e){}
 
                 try
                 {
