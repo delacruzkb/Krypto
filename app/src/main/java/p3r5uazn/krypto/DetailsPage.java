@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 
-//TODO: y'all...
+//TODO: DANIEL PLEASE
 public class DetailsPage extends AppCompatActivity
 {
     @Override
@@ -24,5 +24,12 @@ public class DetailsPage extends AppCompatActivity
         TextView change = findViewById(R.id.change);
         change.setText(Double.toString(currency.getPerChange1h()));
 
+    }
+    @Override
+    public void finish()
+    {
+        Intent intent = new Intent();
+        setResult(RESULT_OK, intent);
+        super.finish();
     }
 }

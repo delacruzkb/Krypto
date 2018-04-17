@@ -1,6 +1,7 @@
 package p3r5uazn.krypto;
 
 import android.app.Activity;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
@@ -19,9 +20,9 @@ public class AsyncTaskQueryFavorites extends AsyncTask<Void,Void,ArrayList<Krypt
 {
     KryptoDatabase favoritesDatabase;
     Context context;
-    public AsyncTaskQueryFavorites(KryptoDatabase favoritesDatabase, Context context)
+    public AsyncTaskQueryFavorites(Context context)
     {
-        this.favoritesDatabase = favoritesDatabase;
+        this.favoritesDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Favorites").build();
         this.context = context;
     }
 

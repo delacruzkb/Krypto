@@ -2,6 +2,7 @@ package p3r5uazn.krypto;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.inputmethodservice.KeyboardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,7 @@ public class SearchScreenListAdapter extends BaseAdapter
     }
 
     @Override
-    public View getView(final int position, View convertView, final ViewGroup parent)
+    public View getView(final int position, final View convertView, final ViewGroup parent)
     {
         View rowView = mLayoutInflater.inflate(R.layout.search_screen_list_item, parent,false);
 
@@ -65,10 +66,12 @@ public class SearchScreenListAdapter extends BaseAdapter
             {
                 KryptoCurrency temp = data.remove(position);;
                 //re-add to database to update value
+                ArrayList<KryptoCurrency> tempList = new ArrayList<>();
+                tempList.add(temp);
                 AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(favoritesDatabase);
-                insertTask.execute(temp);
+                insertTask.execute(tempList);
                 //refresh screen
-                AsyncAPI refreshTask = new AsyncAPI(context);
+                AsyncTaskQueryFilteredData refreshTask = new AsyncTaskQueryFilteredData(context);
                 refreshTask.execute();
             }
         });
