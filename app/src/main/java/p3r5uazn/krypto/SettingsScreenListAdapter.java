@@ -28,7 +28,7 @@ public class SettingsScreenListAdapter extends BaseAdapter
         this.data = data;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         favoritesDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Favorites").build();
-        database = Room.databaseBuilder(context, KryptoDatabase.class,"Data").build();
+        database = Room.databaseBuilder(context, KryptoDatabase.class,"Kryptos").build();
     }
 
     @Override
@@ -67,12 +67,11 @@ public class SettingsScreenListAdapter extends BaseAdapter
             {
                 //update isFavorites
                 KryptoCurrency temp = data.get(position);
-                temp.setFavorite(false);
                 //re-add to database to update value
                 AsyncTaskDeleteDatabase deleteTask = new AsyncTaskDeleteDatabase(favoritesDatabase);
                 deleteTask.execute(temp);
                 //refresh screen
-                AsyncTaskQueryFavorites queryFavorites = new AsyncTaskQueryFavorites(favoritesDatabase,context);
+                AsyncTaskQueryFavorites queryFavorites = new AsyncTaskQueryFavorites(context);
                 queryFavorites.execute();
 
             }
@@ -96,13 +95,15 @@ public class SettingsScreenListAdapter extends BaseAdapter
                         //update Threshold
                         KryptoCurrency temp = data.get(position);
                         temp.setThreshold(Double.parseDouble(userInput.getText().toString()));
+                        ArrayList<KryptoCurrency> tempList = new ArrayList<>();
+                        tempList.add(temp);
                         //re-add to database to update value
                         AsyncTaskInsertDatabase insertTask1 = new AsyncTaskInsertDatabase(favoritesDatabase);
-                        insertTask1.execute(temp);
+                        insertTask1.execute(tempList);
                         AsyncTaskInsertDatabase insertTask2 = new AsyncTaskInsertDatabase(database);
-                        insertTask2.execute(temp);
+                        insertTask2.execute(tempList);
                         //refresh screen
-                        AsyncTaskQueryFavorites queryFavorites = new AsyncTaskQueryFavorites(favoritesDatabase,context);
+                        AsyncTaskQueryFavorites queryFavorites = new AsyncTaskQueryFavorites(context);
                         queryFavorites.execute();
                     }
                 });

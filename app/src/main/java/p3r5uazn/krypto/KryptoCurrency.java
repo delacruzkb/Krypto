@@ -4,27 +4,8 @@ package p3r5uazn.krypto;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.view.View;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by kenso on 2/26/2018.
@@ -32,15 +13,8 @@ import java.util.Map;
 @Entity
 public class KryptoCurrency implements Serializable, Comparable<Object>
 {
-    /***
-     * ToDo
-     * Make key unique and relate to the data
-     */
     @PrimaryKey @NonNull
     private String name;
-
-    @ColumnInfo(name = "isFavorite")
-    private boolean isFavorite;
 
     private static final long serialVersionUID = 1L;
 
@@ -48,7 +22,6 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
     private double priceUSD, priceBTC, volume24, marketCap, availableSupply, totalSupply;
     private double threshold, perChange1h, perChange24h, perChange7d, lastUpdated, maxSupply;
     private int rank;
-    //private Context context;
 
     public double getThreshold() {
         return threshold;
@@ -78,7 +51,6 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
         perChange7d = 0;
         lastUpdated = 0;
         threshold = 1000;
-        isFavorite = false;
         maxSupply = 0;
 
     }
@@ -201,13 +173,6 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
         this.priceUSD = roundToCash(cost);
     }
 
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
-    }
 
     public boolean equals(Object currency)
     {

@@ -14,6 +14,10 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import java.util.ArrayList;
 
+/**
+ * TODO: refresh button
+ * */
+
 public class MainActivity extends AppCompatActivity {
     private static final int BACKGROUND_CODE = 1;
     private AutoCompleteTextView searchBar;
@@ -31,11 +35,10 @@ public class MainActivity extends AppCompatActivity {
         //Sets up Database for favorites
         favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
 
-        //Builds all of the views within the screen with no data
+        //Builds & Instantiates all of the views
         buildViews();
         //update the list with data from the database
         refreshScreen();
-        
     }
 
     //Refresh values when returning from an activity
@@ -49,26 +52,27 @@ public class MainActivity extends AppCompatActivity {
     //updates values on all views
     private void refreshScreen()
     {
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,this);
+        /**TODO: Shaina's pull code to update the Favorites Database
+         * */
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(this);
         queryTask.execute();
     }
 
 
-    //Builds all of the views within the screen with no data within them
+    //Builds & Instantiates all of the views
     private void buildViews()
     {
         ArrayList<KryptoCurrency> temp = new ArrayList<>();
 
-        //Builds search_bar with auto complete
-        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, temp);
+        //Builds searchBar
         searchBar = findViewById(R.id.search_bar);
-        searchBar.setAdapter(searchBarAdapter);
-            //When clicked on an item, remake the listView so that it is the only one present
+        //When clicking an item, remake the listView so that any krypto that contains the item's name is shown
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
                 String keyWord = ((KryptoCurrency) parent.getAdapter().getItem(position)).toString();
+                searchBar.setText("");
                 AsyncTaskCustomSearch customSearch = new AsyncTaskCustomSearch(searchBar.getContext(),keyWord);
                 customSearch.execute();
             }
@@ -78,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event)
             {
-                if(event.getKeyCode()==KeyEvent.KEYCODE_ENTER)
+                if((keyCode==KeyEvent.KEYCODE_ENTER) && event.getAction() == KeyEvent.ACTION_UP)
                 {
                     String keyWord = searchBar.getText().toString();
                     AsyncTaskCustomSearch customSearch = new AsyncTaskCustomSearch(searchBar.getContext(),keyWord);
@@ -87,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, temp);
+        searchBar.setAdapter(searchBarAdapter);
 
         //Builds the settings button
         settingsButton = findViewById(R.id.settings_button);
@@ -102,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
         //builds the ListView
         listView = findViewById(R.id.currency_list);
-            //when an listing is clicked, go to the item's details page
+            //When an listing is clicked, go to the item's details page
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -114,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
         });
         homeScreenListAdapter = new HomeScreenListAdapter(this, temp);
         listView.setAdapter(homeScreenListAdapter);
-
     }
 
 }

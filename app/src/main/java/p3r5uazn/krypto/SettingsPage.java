@@ -66,7 +66,7 @@ public class SettingsPage extends AppCompatActivity
     //refreshes the values of the screen
     protected void refreshScreen()
     {
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,this);
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(this);
         queryTask.execute();
     }
 
@@ -116,10 +116,8 @@ public class SettingsPage extends AppCompatActivity
         });
 
         //Builds search_bar with auto complete and populates the search listing
-        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, temp);
         searchBar = findViewById(R.id.settings_search_bar);
-        searchBar.setAdapter(searchBarAdapter);
-        //When clicked on an item, remake the listView so that it is the only one present
+        //When clicking an item, remake the listView so that any krypto that contains the item's name is shown
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -134,7 +132,7 @@ public class SettingsPage extends AppCompatActivity
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event)
             {
-                if(event.getKeyCode()==KeyEvent.KEYCODE_ENTER)
+                if((keyCode==KeyEvent.KEYCODE_ENTER) && event.getAction() == KeyEvent.ACTION_UP)
                 {
                     String keyWord = searchBar.getText().toString();
                     AsyncTaskCustomSearch customSearch = new AsyncTaskCustomSearch(searchBar.getContext(),keyWord);
@@ -143,6 +141,8 @@ public class SettingsPage extends AppCompatActivity
                 return false;
             }
         });
+        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, temp);
+        searchBar.setAdapter(searchBarAdapter);
 
         //Builds listView
         listView = findViewById(R.id.favorites_list);

@@ -2,19 +2,24 @@ package p3r5uazn.krypto;
 
 import android.os.AsyncTask;
 
-public class AsyncTaskInsertDatabase extends AsyncTask<KryptoCurrency,Void,Void>
-{
-    KryptoDatabase favoritesDatabase;
+import java.util.ArrayList;
 
-    public AsyncTaskInsertDatabase(KryptoDatabase fdb)
+public class AsyncTaskInsertDatabase extends AsyncTask<ArrayList<KryptoCurrency>,Void,Void>
+{
+    KryptoDatabase database;
+
+    public AsyncTaskInsertDatabase(KryptoDatabase database)
     {
-        favoritesDatabase = fdb;
+        this.database = database;
     }
 
     @Override
-    protected Void doInBackground(KryptoCurrency... kryptoCurrency)
+    protected Void doInBackground(ArrayList<KryptoCurrency>... kryptoCurrency)
     {
-        favoritesDatabase.kryptoCurrencyDao().insertKryptoCurrency(kryptoCurrency[0]);
+        ArrayList<KryptoCurrency> data = kryptoCurrency[0];
+        for(int i = 0; i < data.size();i++) {
+            database.kryptoCurrencyDao().insertKryptoCurrency(data.get(i));
+        }
         return null;
     }
 }

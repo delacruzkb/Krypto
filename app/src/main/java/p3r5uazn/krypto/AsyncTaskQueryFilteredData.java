@@ -18,14 +18,15 @@ import java.util.Collections;
 
 public class AsyncTaskQueryFilteredData extends AsyncTask<Void,Void,ArrayList<KryptoCurrency>>
 {
-    private ArrayList<KryptoCurrency> data;
     private KryptoDatabase favoritesDatabase;
+    private KryptoDatabase kryptoDatabase;
     private Context context;
 
-    public AsyncTaskQueryFilteredData( Context context, ArrayList<KryptoCurrency> data) {
-        this.data = data;
+    public AsyncTaskQueryFilteredData( Context context)
+    {
         this.context = context;
-        this.favoritesDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Favorites").build();
+        favoritesDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Favorites").build();
+        kryptoDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Kryptos").build();
     }
 
     @Override
@@ -48,6 +49,7 @@ public class AsyncTaskQueryFilteredData extends AsyncTask<Void,Void,ArrayList<Kr
     {
         //return list of non-favorites from database
         ArrayList<KryptoCurrency> returnValue= new ArrayList<>();
+        ArrayList<KryptoCurrency> data = (ArrayList<KryptoCurrency>) kryptoDatabase.kryptoCurrencyDao().getAllKryptoCurrencies();
         ArrayList<KryptoCurrency> favorites = (ArrayList<KryptoCurrency>) favoritesDatabase.kryptoCurrencyDao().getAllKryptoCurrencies();
         for (int i =0; i < data.size(); i++)
         {
