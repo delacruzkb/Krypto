@@ -14,8 +14,6 @@
         android:layout_height="90dp"
         app:srcCompat="@drawable/krypto_blue" />
 
-
-
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,10 +22,9 @@
 
         <AutoCompleteTextView
             android:id="@+id/search_bar"
-            android:layout_width="340dp"
+            android:layout_width="362dp"
             android:layout_height="wrap_content"
             android:background="#828697"
-            android:completionHint="Search . . ."
             android:completionThreshold="1"
             android:hint="Search..."
             android:inputType="text"
@@ -40,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/main_background"
-            app:srcCompat="@android:drawable/ic_menu_preferences" />
+            app:srcCompat="@drawable/vert" />
 
     </TableRow>
 
