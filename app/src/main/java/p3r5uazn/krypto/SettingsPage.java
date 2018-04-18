@@ -104,16 +104,6 @@ public class SettingsPage extends AppCompatActivity
             }
         });
 
-        //Builds add button
-        addButton = findViewById(R.id.add_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(addButton.getContext(), SearchPage.class);
-                startActivityForResult(intent, BACKGROUND_CODE);
-            }
-        });
 
         //Builds search_bar with auto complete and populates the search listing
         searchBar = findViewById(R.id.settings_search_bar);
