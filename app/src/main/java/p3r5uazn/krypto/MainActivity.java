@@ -3,6 +3,7 @@ package p3r5uazn.krypto;
 import android.app.Activity;
 import android.arch.persistence.room.Room;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.support.design.widget.FloatingActionButton;
 import java.util.ArrayList;
 
 /**
@@ -31,6 +33,14 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
+        final FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(fab.getContext(), SearchPage.class);
+                startActivityForResult(intent, BACKGROUND_CODE);
+            }
+        });
 
         //Sets up Database for favorites
         favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();

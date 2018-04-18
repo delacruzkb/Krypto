@@ -14,6 +14,8 @@
         android:layout_height="90dp"
         app:srcCompat="@drawable/krypto_blue" />
 
+
+
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -24,12 +26,14 @@
             android:id="@+id/search_bar"
             android:layout_width="340dp"
             android:layout_height="wrap_content"
+            android:background="#828697"
             android:completionHint="Search . . ."
             android:completionThreshold="1"
-            android:textColor="@color/text"
+            android:hint="Search..."
             android:inputType="text"
-            android:background="#2e3037"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:textColor="@color/text" />
 
         <ImageButton
             android:id="@+id/settings_button"
@@ -40,6 +44,9 @@
 
     </TableRow>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ListView
         android:id="@+id/currency_list"
         android:layout_width="match_parent"
@@ -47,5 +54,16 @@
         android:divider="@color/divider"
         android:dividerHeight="2.0sp"
         />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="@android:drawable/ic_menu_add" />
+
+    </FrameLayout>
+
 
 </LinearLayout>
