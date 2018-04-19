@@ -54,13 +54,24 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <ListView
+
+        <ListView
         android:id="@+id/currency_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/divider"
         android:dividerHeight="2.0sp"
         />
+
+        <TextView
+            android:id="@+id/empty_list_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="@string/empty_list"
+            android:textColor="@color/text"
+            android:textSize="24sp"
+            android:visibility="gone" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

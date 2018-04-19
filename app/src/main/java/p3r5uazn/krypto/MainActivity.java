@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        listView.setEmptyView(findViewById(R.id.empty_list_item));
 
         //Builds the floating action button
         fab = findViewById(R.id.fab);
