@@ -13,7 +13,7 @@
         android:id="@+id/krypto_logo"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        app:srcCompat="@drawable/krypto_white" android:contentDescription="TODO" />
+        app:srcCompat="@drawable/krypto_blue" android:contentDescription="TODO" />
 
     <AutoCompleteTextView
         android:id="@+id/add_search_bar"

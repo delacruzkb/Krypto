@@ -2,7 +2,6 @@ package p3r5uazn.krypto;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
-import android.inputmethodservice.KeyboardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,10 +76,5 @@ public class SearchScreenListAdapter extends BaseAdapter
         });
 
         return rowView;
-    }
-
-    public ArrayList<KryptoCurrency> getData()
-    {
-        return data;
     }
 }

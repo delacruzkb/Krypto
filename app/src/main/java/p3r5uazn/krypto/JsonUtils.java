@@ -1,4 +1,4 @@
-package p3r5uazn.krypto;
+/*package p3r5uazn.krypto;
 
 import android.util.Log;
 
@@ -8,8 +8,7 @@ import org.json.JSONObject;
 /**
  * Created by smainar on 3/17/2018.
  */
-
-//TODO: not sure if this is right, just copied from stock quotes
+/*
 public class JsonUtils {
     public static JSONObject parseKryptoJson(String json) {
         JSONObject krypto = null;
@@ -24,4 +23,4 @@ public class JsonUtils {
         return krypto;
     }
 
-}
+}*/

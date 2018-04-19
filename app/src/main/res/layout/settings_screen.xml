@@ -13,7 +13,7 @@
         android:id="@+id/krypto_logo"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        app:srcCompat="@drawable/krypto_white" android:contentDescription="TODO" />
+        app:srcCompat="@drawable/krypto_blue" android:contentDescription="TODO" />
 
     <TableRow
         android:layout_width="match_parent"
@@ -43,13 +43,6 @@
         android:layout_height="wrap_content"
         android:background="@color/main_background"
         android:gravity="start">
-
-        <ImageButton
-            android:id="@+id/add_button"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/main_background"
-            app:srcCompat="@android:drawable/ic_menu_add" />
 
         <AutoCompleteTextView
             android:id="@+id/settings_search_bar"

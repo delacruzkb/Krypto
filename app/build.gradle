@@ -32,4 +32,5 @@ dependencies {
     compileOnly 'com.google.android.wearable:wearable:2.2.0'
     compile 'com.jjoe64:graphview:4.2.1'
 
+    implementation 'com.android.support:design:26.1.0'
 }
