@@ -2,6 +2,7 @@ package p3r5uazn.krypto;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.inputmethodservice.KeyboardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +16,12 @@ public class SearchScreenListAdapter extends BaseAdapter
     private Context context;
     private LayoutInflater mLayoutInflater;
     private ArrayList<KryptoCurrency> data;
-    private KryptoDatabase kryptoDatabase;
     private KryptoDatabase favoritesDatabase;
     public SearchScreenListAdapter(Context context, ArrayList<KryptoCurrency> data)
     {
         this.context =context;
         this.data = data;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        kryptoDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Data").build();
         favoritesDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Favorites").build();
     }
 
@@ -45,7 +44,7 @@ public class SearchScreenListAdapter extends BaseAdapter
     }
 
     @Override
-    public View getView(final int position, View convertView, final ViewGroup parent)
+    public View getView(final int position, final View convertView, final ViewGroup parent)
     {
         View rowView = mLayoutInflater.inflate(R.layout.search_screen_list_item, parent,false);
 
@@ -67,14 +66,21 @@ public class SearchScreenListAdapter extends BaseAdapter
             {
                 KryptoCurrency temp = data.remove(position);;
                 //re-add to database to update value
+                ArrayList<KryptoCurrency> tempList = new ArrayList<>();
+                tempList.add(temp);
                 AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(favoritesDatabase);
-                insertTask.execute(temp);
+                insertTask.execute(tempList);
                 //refresh screen
-                AsyncTaskQueryFilteredData queryFavorites = new AsyncTaskQueryFilteredData(kryptoDatabase, favoritesDatabase,context);
-                queryFavorites.execute();
+                AsyncTaskQueryFilteredData refreshTask = new AsyncTaskQueryFilteredData(context);
+                refreshTask.execute();
             }
         });
 
         return rowView;
+    }
+
+    public ArrayList<KryptoCurrency> getData()
+    {
+        return data;
     }
 }

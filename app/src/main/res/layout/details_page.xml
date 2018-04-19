@@ -19,16 +19,16 @@
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph"
-        android:layout_width="228dp"
+        android:layout_width="match_parent"
         android:layout_height="283dp"
         android:layout_x="120px"
-        android:layout_y="30px"/>
+        android:layout_y="30px" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="I don't know what to put here, but here is info on what you clicked:"
+        android:text="24hr Market Data"
         android:textColor="@color/text" />
 
 

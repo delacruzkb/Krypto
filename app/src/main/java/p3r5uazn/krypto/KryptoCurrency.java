@@ -5,7 +5,6 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
-
 import java.io.Serializable;
 
 /**
@@ -14,20 +13,15 @@ import java.io.Serializable;
 @Entity
 public class KryptoCurrency implements Serializable, Comparable<Object>
 {
-
     @PrimaryKey @NonNull
     private String name;
-
-    @ColumnInfo(name = "isFavorite")
-    private boolean isFavorite;
 
     private static final long serialVersionUID = 1L;
 
     private String id, symbol;
     private double priceUSD, priceBTC, volume24, marketCap, availableSupply, totalSupply;
-    private double threshold, perChange1h, perChange24h, perChange7d, lastUpdated;
+    private double threshold, perChange1h, perChange24h, perChange7d, lastUpdated, maxSupply;
     private int rank;
-
 
     public double getThreshold() {
         return threshold;
@@ -36,6 +30,7 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
     public void setThreshold(double threshold) {
         this.threshold = roundToCash(threshold);
     }
+
 
 
 
@@ -56,7 +51,8 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
         perChange7d = 0;
         lastUpdated = 0;
         threshold = 1000;
-        isFavorite = false;
+        maxSupply = 0;
+
     }
     public String getId() {
         return id;
@@ -113,6 +109,13 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
     public void setTotalSupply(double totalSupply) {
         this.totalSupply = totalSupply;
     }
+    public double getMaxSupply() {
+        return maxSupply;
+    }
+
+    public void setMaxSupply(double maxSupply) {
+        this.maxSupply = maxSupply;
+    }
 
     public double getPerChange1h() {
         return perChange1h;
@@ -130,11 +133,11 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
         this.perChange24h = perChange24h;
     }
 
-    public double getPerchange7d() {
+    public double getPerChange7d() {
         return perChange7d;
     }
 
-    public void setPerchange7d(double perChange7d) {
+    public void setPerChange7d(double perChange7d) {
         this.perChange7d = perChange7d;
     }
 
@@ -170,21 +173,6 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
         this.priceUSD = roundToCash(cost);
     }
 
-    public double getPerChange7d() {
-        return perChange7d;
-    }
-
-    public void setPerChange7d(double perChange7d) {
-        this.perChange7d = perChange7d;
-    }
-
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
-    }
 
     public boolean equals(Object currency)
     {
