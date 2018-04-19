@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private ImageButton settingsButton;
     private FloatingActionButton fab;
-    private SwipeRefreshLayout swiperefresh;
+    private ImageButton refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -36,15 +36,6 @@ public class MainActivity extends AppCompatActivity {
         buildViews();
         //update the list with data from the database
         refreshScreen();
-        swiperefresh = findViewById(R.id.swiperefresh);
-        swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        refreshScreen();
-                    }
-                }
-        );
 
     }
 
@@ -105,6 +96,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(listView.getContext(), SettingsPage.class);
                 startActivityForResult(intent, BACKGROUND_CODE);
+            }
+        });
+        refresh = findViewById(R.id.imageButton);
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refreshScreen();
             }
         });
 
