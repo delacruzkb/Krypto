@@ -1,20 +1,16 @@
 package p3r5uazn.krypto;
 
 import android.app.Activity;
-import android.arch.persistence.room.Room;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.support.design.widget.FloatingActionButton;
-import java.util.ArrayList;
 
 /**
  * TODO: refresh button
@@ -25,25 +21,13 @@ public class MainActivity extends AppCompatActivity {
     private AutoCompleteTextView searchBar;
     private ListView listView;
     private ImageButton settingsButton;
-    private HomeScreenListAdapter homeScreenListAdapter;
-    private ArrayAdapter<KryptoCurrency> searchBarAdapter;
-    private KryptoDatabase favoritesDatabase;
+    private FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
-        final FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(fab.getContext(), SearchPage.class);
-                startActivityForResult(intent, BACKGROUND_CODE);
-            }
-        });
-
-        //Sets up Database for favorites
-        favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
 
         //Builds & Instantiates all of the views
         buildViews();
@@ -72,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
     //Builds & Instantiates all of the views
     private void buildViews()
     {
-        ArrayList<KryptoCurrency> temp = new ArrayList<>();
-
         //Builds searchBar
         searchBar = findViewById(R.id.search_bar);
         //When clicking an item, remake the listView so that any krypto that contains the item's name is shown
@@ -87,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 customSearch.execute();
             }
         });
-            //When pressing enter, remake the listView so that any krypto that contains the keyword in it's name is shown
+        //When pressing enter, remake the listView so that any krypto that contains the keyword in it's name is shown
         searchBar.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event)
@@ -101,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, temp);
-        searchBar.setAdapter(searchBarAdapter);
 
         //Builds the settings button
         settingsButton = findViewById(R.id.settings_button);
@@ -128,8 +108,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        homeScreenListAdapter = new HomeScreenListAdapter(this, temp);
-        listView.setAdapter(homeScreenListAdapter);
+
+        //Builds the floating action button
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(fab.getContext(), SearchPage.class);
+                startActivityForResult(intent, BACKGROUND_CODE);
+            }
+        });
     }
 
 }
