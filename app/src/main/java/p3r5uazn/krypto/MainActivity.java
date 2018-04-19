@@ -2,8 +2,10 @@ package p3r5uazn.krypto;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listView;
     private ImageButton settingsButton;
     private FloatingActionButton fab;
+    private SwipeRefreshLayout swiperefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
         buildViews();
         //update the list with data from the database
         refreshScreen();
+        swiperefresh = findViewById(R.id.swiperefresh);
+        swiperefresh.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        refreshScreen();
+                    }
+                }
+        );
+
     }
 
     //Refresh values when returning from an activity
