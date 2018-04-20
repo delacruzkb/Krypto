@@ -29,7 +29,9 @@ import java.sql.Time;
 public class DetailsPage extends AppCompatActivity {
     private TextView high;
     private TextView low;
-    private TextView change;
+    private TextView bid;
+    private TextView ask;
+    private TextView changes;
     private TextView data;
     private EditText note;
 
@@ -41,29 +43,52 @@ public class DetailsPage extends AppCompatActivity {
         KryptoCurrency currency = (KryptoCurrency) intent.getSerializableExtra("KryptoCurrency");
 
 
-        // high = findViewById(R.id.high);
-        // low = findViewById(R.id.low);
+        //high = findViewById(R.id.high);
+        //low = findViewById(R.id.low);
 
 
+       TextView btc = (TextView) findViewById(R.id.btc);
+        btc.setText(Double.toString(currency.getPriceBTC()));
+
+        TextView volume = (TextView) findViewById(R.id.volume);
+        volume.setText(Double.toString(currency.getVolume24()));
+
+        TextView cap = (TextView) findViewById(R.id.cap);
+        cap.setText(Double.toString(currency.getMarketCap()));
+
+        TextView availableSupp = (TextView) findViewById(R.id.available);
+        availableSupp.setText(Double.toString(currency.getAvailableSupply()));
+
+        TextView totalSupp = (TextView) findViewById(R.id.total);
+        totalSupp.setText(Double.toString(currency.getTotalSupply()));
+
+        TextView maxSupp = (TextView) findViewById(R.id.max);
+        maxSupp.setText(Double.toString(currency.getMaxSupply()));
 
         TextView name = (TextView) findViewById(R.id.name);
         name.setText(currency.getName());
         TextView cost = findViewById(R.id.cost);
         cost.setText(Double.toString(currency.getPriceUSD()));
-        TextView change = findViewById(R.id.change);
-        change.setText(Double.toString(currency.getPerChange1h()));
+        TextView change1 = findViewById(R.id.change1);
+        change1.setText(Double.toString(currency.getPerChange1h()));
+
+        TextView change24 = findViewById(R.id.change24);
+        change24.setText(Double.toString(currency.getPerChange24h()));
+
+        TextView change7 = findViewById(R.id.change7);
+        change7.setText(Double.toString(currency.getPerChange7d()));
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
+                new DataPoint(0, currency.getPriceUSD()),
+                new DataPoint(1, currency.getPriceUSD()),
                 new DataPoint(2, 3),
                 new DataPoint(3, 2),
                 new DataPoint(4, 6)
         });
         series.setColor(Color.BLUE);
 
-        // generate Dates
+    /*    // generate Dates
         Calendar calendar = Calendar.getInstance();
         Date d1 = (Date) calendar.getTime();
         calendar.add(Calendar.DATE, 1);
@@ -96,7 +121,7 @@ public class DetailsPage extends AppCompatActivity {
 // is not necessary
         graph.getGridLabelRenderer().setHumanRounding(false);
     }
-}
+}*/
 
-
-
+        }
+    }
