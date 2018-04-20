@@ -2,12 +2,15 @@ package p3r5uazn.krypto;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.icu.text.DecimalFormat;
 import android.media.TimedText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.TextClock;
+
+import java.util.BitSet;
 import java.util.Calendar;
 
 import com.jjoe64.graphview.GraphView;
@@ -17,7 +20,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.sql.Date;
 import java.sql.Time;
-
+import java.util.MissingFormatArgumentException;
 
 
 //<<<<<<< HEAD
@@ -34,6 +37,10 @@ public class DetailsPage extends AppCompatActivity {
     private TextView changes;
     private TextView data;
     private EditText note;
+    private double simple;
+    private String temp;
+    private final int MILL = 1000000;
+    private final int BILL = 1000000000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,32 +50,103 @@ public class DetailsPage extends AppCompatActivity {
         KryptoCurrency currency = (KryptoCurrency) intent.getSerializableExtra("KryptoCurrency");
 
 
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
         //high = findViewById(R.id.high);
         //low = findViewById(R.id.low);
 
 
        TextView btc = (TextView) findViewById(R.id.btc);
-        btc.setText(Double.toString(currency.getPriceBTC()));
+       if(currency.getPriceBTC() >= BILL)
+       {
+           simple = currency.getPriceBTC()/BILL;
+           temp = df.format(simple) + " B";
+           btc.setText(temp);
+       }
+       else
+       {
+            simple = currency.getPriceBTC()/MILL;
+            temp = df.format(simple) + " M";
+            btc.setText(temp);
+       }
+
 
         TextView volume = (TextView) findViewById(R.id.volume);
-        volume.setText(Double.toString(currency.getVolume24()));
+        if(currency.getVolume24() >= BILL)
+        {
+            simple = currency.getVolume24()/ BILL;
+            temp = df.format(simple) + " B";
+            volume.setText(temp);
+        }
+        else
+        {
+            simple = currency.getVolume24()/MILL;
+            temp = df.format(simple) + " M";
+            volume.setText(temp);
+        }
 
         TextView cap = (TextView) findViewById(R.id.cap);
-        cap.setText(Double.toString(currency.getMarketCap()));
+        if(currency.getMarketCap() >= BILL)
+        {
+            simple = currency.getMarketCap()/BILL;
+            temp = df.format(simple) + " B";
+            cap.setText(temp);
+        }
+        else
+        {
+            simple = currency.getMarketCap()/ MILL;
+            temp = df.format(simple) + " M";
+            cap.setText(temp);
+        }
 
         TextView availableSupp = (TextView) findViewById(R.id.available);
-        availableSupp.setText(Double.toString(currency.getAvailableSupply()));
+        if(currency.getAvailableSupply() >= BILL)
+        {
+            simple = currency.getAvailableSupply()/BILL;
+            temp = df.format(simple) + " B";
+            availableSupp.setText(temp);
+        }
+        else
+        {
+            simple = currency.getAvailableSupply()/MILL;
+            temp = df.format(simple) + " M";
+            availableSupp.setText(temp);
+        }
 
         TextView totalSupp = (TextView) findViewById(R.id.total);
-        totalSupp.setText(Double.toString(currency.getTotalSupply()));
+        if(currency.getTotalSupply() >= BILL)
+        {
+            simple = currency.getTotalSupply()/BILL;
+            temp = df.format(simple) + " B";
+            totalSupp.setText(temp);
+        }
+        else
+        {
+            simple = currency.getTotalSupply()/MILL;
+            temp = df.format(simple) + " M";
+            totalSupp.setText(temp);
+        }
 
         TextView maxSupp = (TextView) findViewById(R.id.max);
-        maxSupp.setText(Double.toString(currency.getMaxSupply()));
+        if(currency.getMaxSupply() >= BILL)
+        {
+            simple = currency.getMaxSupply()/BILL;
+            temp = df.format(simple) + " B";
+            maxSupp.setText(temp);
+        }
+        else
+        {
+            simple = currency.getMaxSupply()/MILL;
+            temp = df.format(simple) + " M";
+            maxSupp.setText(temp);
+        }
 
         TextView name = (TextView) findViewById(R.id.name);
         name.setText(currency.getName());
+
         TextView cost = findViewById(R.id.cost);
         cost.setText(Double.toString(currency.getPriceUSD()));
+
         TextView change1 = findViewById(R.id.change1);
         change1.setText(Double.toString(currency.getPerChange1h()));
 
@@ -77,6 +155,8 @@ public class DetailsPage extends AppCompatActivity {
 
         TextView change7 = findViewById(R.id.change7);
         change7.setText(Double.toString(currency.getPerChange7d()));
+
+        EditText note = findViewById(R.id.note);
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{

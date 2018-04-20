@@ -68,7 +68,7 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="167dp"
+        android:layout_height="90dp"
         >
         <TableRow>
 
@@ -195,5 +195,12 @@
         </TableRow>
 
     </TableLayout>
+
+    <EditText
+        android:id="@+id/note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notes"
+        android:textSize="30dp"/>
 
 </LinearLayout>
