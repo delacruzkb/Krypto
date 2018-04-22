@@ -57,22 +57,14 @@ public class DetailsPage extends AppCompatActivity {
 
 
        TextView btc = (TextView) findViewById(R.id.btc);
-       if(currency.getPriceBTC() >= BILL)
-       {
-           simple = currency.getPriceBTC()/BILL;
-           temp = df.format(simple) + " B";
-           btc.setText(temp);
-       }
-       else
-       {
-            simple = currency.getPriceBTC()/MILL;
-            temp = df.format(simple) + " M";
-            btc.setText(temp);
-       }
-
+       btc.setText(Double.toString(currency.getPriceBTC()));
 
         TextView volume = (TextView) findViewById(R.id.volume);
-        if(currency.getVolume24() >= BILL)
+        if(currency.getVolume24() == 0)
+        {
+            volume.setText("N/A");
+        }
+        else if(currency.getVolume24() >= BILL)
         {
             simple = currency.getVolume24()/ BILL;
             temp = df.format(simple) + " B";
@@ -86,7 +78,11 @@ public class DetailsPage extends AppCompatActivity {
         }
 
         TextView cap = (TextView) findViewById(R.id.cap);
-        if(currency.getMarketCap() >= BILL)
+        if(currency.getMarketCap() == 0)
+        {
+            cap.setText("N/A");
+        }
+        else if(currency.getMarketCap() >= BILL)
         {
             simple = currency.getMarketCap()/BILL;
             temp = df.format(simple) + " B";
@@ -100,7 +96,11 @@ public class DetailsPage extends AppCompatActivity {
         }
 
         TextView availableSupp = (TextView) findViewById(R.id.available);
-        if(currency.getAvailableSupply() >= BILL)
+        if(currency.getAvailableSupply() == 0)
+        {
+            availableSupp.setText("N/A");
+        }
+        else if(currency.getAvailableSupply() >= BILL)
         {
             simple = currency.getAvailableSupply()/BILL;
             temp = df.format(simple) + " B";
@@ -114,7 +114,11 @@ public class DetailsPage extends AppCompatActivity {
         }
 
         TextView totalSupp = (TextView) findViewById(R.id.total);
-        if(currency.getTotalSupply() >= BILL)
+        if(currency.getTotalSupply() == 0)
+        {
+            totalSupp.setText("N/A");
+        }
+        else if(currency.getTotalSupply() >= BILL)
         {
             simple = currency.getTotalSupply()/BILL;
             temp = df.format(simple) + " B";
@@ -128,7 +132,11 @@ public class DetailsPage extends AppCompatActivity {
         }
 
         TextView maxSupp = (TextView) findViewById(R.id.max);
-        if(currency.getMaxSupply() >= BILL)
+        if(currency.getMaxSupply() == 0)
+        {
+            maxSupp.setText("N/A");
+        }
+        else if(currency.getMaxSupply() >= BILL)
         {
             simple = currency.getMaxSupply()/BILL;
             temp = df.format(simple) + " B";
@@ -156,7 +164,6 @@ public class DetailsPage extends AppCompatActivity {
         TextView change7 = findViewById(R.id.change7);
         change7.setText(Double.toString(currency.getPerChange7d()));
 
-        EditText note = findViewById(R.id.note);
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
