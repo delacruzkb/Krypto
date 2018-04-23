@@ -1,39 +1,28 @@
 package p3r5uazn.krypto;
 
 import android.app.Activity;
-import android.arch.persistence.room.Room;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 public class SettingsPage extends AppCompatActivity
 {
     public final int BACKGROUND_CODE = 1;
-    private ListView listView;
     private TextView notificationLabel;
     private Switch notificationSwitch;
     private AutoCompleteTextView searchBar;
-    private ArrayAdapter<KryptoCurrency> searchBarAdapter;
-    private SettingsScreenListAdapter settingsScreenListAdapter;
-    private ImageButton addButton;
-    private KryptoDatabase favoritesDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_screen);
-        favoritesDatabase = Room.databaseBuilder(this, KryptoDatabase.class,"Favorites").build();
 
         /**
          * ToDo Implement notification function in buildViews
@@ -66,14 +55,13 @@ public class SettingsPage extends AppCompatActivity
     //refreshes the values of the screen
     protected void refreshScreen()
     {
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(favoritesDatabase,this);
+        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(this);
         queryTask.execute();
     }
 
     //Builds all of the views within the screen with no data
     private void buildViews()
     {
-        ArrayList<KryptoCurrency> temp = new ArrayList<>();
         //builds notification label and switch
         notificationLabel = findViewById(R.id.notification_label);
         notificationLabel.setText(R.string.switch_off_text);
@@ -104,22 +92,10 @@ public class SettingsPage extends AppCompatActivity
             }
         });
 
-        //Builds add button
-        addButton = findViewById(R.id.add_button);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(addButton.getContext(), SearchPage.class);
-                startActivityForResult(intent, BACKGROUND_CODE);
-            }
-        });
 
         //Builds search_bar with auto complete and populates the search listing
-        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, temp);
         searchBar = findViewById(R.id.settings_search_bar);
-        searchBar.setAdapter(searchBarAdapter);
-        //When clicked on an item, remake the listView so that it is the only one present
+        //When clicking an item, remake the listView so that any krypto that contains the item's name is shown
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -134,7 +110,7 @@ public class SettingsPage extends AppCompatActivity
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event)
             {
-                if(event.getKeyCode()==KeyEvent.KEYCODE_ENTER)
+                if((keyCode==KeyEvent.KEYCODE_ENTER) && event.getAction() == KeyEvent.ACTION_UP)
                 {
                     String keyWord = searchBar.getText().toString();
                     AsyncTaskCustomSearch customSearch = new AsyncTaskCustomSearch(searchBar.getContext(),keyWord);
@@ -143,10 +119,5 @@ public class SettingsPage extends AppCompatActivity
                 return false;
             }
         });
-
-        //Builds listView
-        listView = findViewById(R.id.favorites_list);
-        settingsScreenListAdapter = new SettingsScreenListAdapter(this, temp);
-        listView.setAdapter(settingsScreenListAdapter);
     }
 }

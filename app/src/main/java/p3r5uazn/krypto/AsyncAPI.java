@@ -1,5 +1,6 @@
 package p3r5uazn.krypto;
 
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -18,9 +19,12 @@ import java.util.ArrayList;
 
 public class AsyncAPI extends AsyncTask<Void, Void, String>
 {
-    Context context;
-    public AsyncAPI(Context context) {
+    private Context context;
+    private KryptoDatabase kryptoDatabase;
+    public AsyncAPI(Context context)
+    {
         this.context = context;
+        kryptoDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Kryptos").build();
     }
 
     //returns a string of the json response
@@ -71,11 +75,26 @@ public class AsyncAPI extends AsyncTask<Void, Void, String>
             for(int i = 0; i < returnedJsonString.length(); ++i){
                 KryptoCurrency krypto = new KryptoCurrency();
                 JSONObject jsonObject = returnedJsonString.getJSONObject(i);
-                krypto.setId(jsonObject.getString("id"));
-                krypto.setName(jsonObject.getString("name"));
-                krypto.setSymbol(jsonObject.getString("symbol"));
-                krypto.setRank((Integer.parseInt(jsonObject.getString("rank"))));
-                krypto.setPriceUSD(Double.parseDouble(jsonObject.getString("price_usd")));
+                try{
+                    krypto.setId(jsonObject.getString("id"));
+                }catch (Exception e){}
+                try
+                {
+                    krypto.setName(jsonObject.getString("name"));
+                } catch (Exception e){}
+
+                try
+                {
+                    krypto.setSymbol(jsonObject.getString("symbol"));
+                }catch(Exception e){}
+                try
+                {
+                    krypto.setRank((Integer.parseInt(jsonObject.getString("rank"))));
+                }catch(Exception e){}
+                try
+                {
+                    krypto.setPriceUSD(Double.parseDouble(jsonObject.getString("price_usd")));
+                }catch(Exception e){}
 
                 try
                 {
@@ -163,10 +182,13 @@ public class AsyncAPI extends AsyncTask<Void, Void, String>
             e.printStackTrace();
         }
         Log.e("RESULT TEXT",result);
-        System.out.println(result);
-        System.out.println(kryptos.size());
-        AsyncTaskQueryFilteredData asyncTaskQueryFilteredData = new AsyncTaskQueryFilteredData(context, kryptos);
-        asyncTaskQueryFilteredData.execute();
+
+        //insert the arraylist into the kryptoDatabase
+        AsyncTaskInsertDatabase insertTask = new AsyncTaskInsertDatabase(kryptoDatabase);
+        insertTask.execute(kryptos);
+
+        AsyncTaskQueryFilteredData refreshTask = new AsyncTaskQueryFilteredData(context);
+        refreshTask.execute();
 
     }
 }

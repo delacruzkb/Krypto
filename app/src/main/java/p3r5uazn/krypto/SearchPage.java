@@ -6,23 +6,17 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.ListView;
-
-import java.util.ArrayList;
 
 public class SearchPage extends AppCompatActivity
 {
-    private ListView listView;
     private AutoCompleteTextView searchBar;
-    private ArrayAdapter<KryptoCurrency> searchBarAdapter;
-    private SearchScreenListAdapter searchScreenListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_screen);
+
         //Builds all of the views within the screen and populates them with data
         buildViews();
         //update the list with data from the database
@@ -44,30 +38,35 @@ public class SearchPage extends AppCompatActivity
         AsyncAPI asyncAPI = new AsyncAPI(this);
         asyncAPI.execute();
     }
+
     //Builds all of the views within the screen and populates them with data
     private void buildViews()
     {
-        ArrayList<KryptoCurrency> temp = new ArrayList<>();
         //Builds search_bar with auto complete
-        searchBarAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, temp);
         searchBar = findViewById(R.id.add_search_bar);
-        searchBar.setAdapter(searchBarAdapter);
+        //When clicking an item, remake the listView so that any krypto that contains the item's name is shown
         searchBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                searchBar.setText("");
-                ArrayList<KryptoCurrency> tempSearch = new ArrayList<>();
-                KryptoCurrency selected = (KryptoCurrency) parent.getAdapter().getItem(position);
-                tempSearch.add(selected);
-                searchScreenListAdapter = new SearchScreenListAdapter(view.getContext(), tempSearch);
-                listView.setAdapter(searchScreenListAdapter);
+                String keyWord = ((KryptoCurrency) parent.getAdapter().getItem(position)).toString();
+                AsyncTaskCustomSearch customSearch = new AsyncTaskCustomSearch(searchBar.getContext(),keyWord);
+                customSearch.execute();
             }
         });
-
-        //Builds list view
-        searchScreenListAdapter = new SearchScreenListAdapter(this, temp);
-        listView = findViewById(R.id.data_list);
-        listView.setAdapter(searchScreenListAdapter);
+        //When pressing enter, remake the listView so that any krypto that contains the keyword in it's name is shown
+        searchBar.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if((keyCode==KeyEvent.KEYCODE_ENTER) && event.getAction() == KeyEvent.ACTION_UP)
+                {
+                    String keyWord = searchBar.getText().toString();
+                    AsyncTaskCustomSearch customSearch = new AsyncTaskCustomSearch(searchBar.getContext(),keyWord);
+                    customSearch.execute();
+                }
+                return false;
+            }
+        });
     }
 }
