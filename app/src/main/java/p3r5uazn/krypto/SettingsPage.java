@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingsPage extends AppCompatActivity
 {
@@ -55,8 +56,8 @@ public class SettingsPage extends AppCompatActivity
     //refreshes the values of the screen
     protected void refreshScreen()
     {
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(this);
-        queryTask.execute();
+        AsyncUpdateFavoritesOnly updateTask = new AsyncUpdateFavoritesOnly(this);
+        updateTask.execute();
     }
 
     //Builds all of the views within the screen with no data

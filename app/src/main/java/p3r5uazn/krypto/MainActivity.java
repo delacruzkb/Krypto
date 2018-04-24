@@ -2,6 +2,7 @@ package p3r5uazn.krypto;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.support.design.widget.FloatingActionButton;
+import android.widget.Toast;
 
 /**
  * TODO: refresh button
@@ -50,10 +52,8 @@ public class MainActivity extends AppCompatActivity {
     //updates values on all views
     private void refreshScreen()
     {
-        /**TODO: Shaina's pull code to update the Favorites Database
-         * */
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(this);
-        queryTask.execute();
+        AsyncUpdateFavoritesOnly updateTask = new AsyncUpdateFavoritesOnly(this);
+        updateTask.execute();
     }
 
 
