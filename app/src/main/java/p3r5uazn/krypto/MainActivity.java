@@ -16,9 +16,6 @@ import android.widget.ListView;
 import android.support.design.widget.FloatingActionButton;
 import android.widget.Toast;
 
-/**
- * TODO: refresh button
- * */
 
 public class MainActivity extends AppCompatActivity {
     private static final int BACKGROUND_CODE = 1;

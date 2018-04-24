@@ -15,8 +15,6 @@ import android.widget.Toast;
 public class SettingsPage extends AppCompatActivity
 {
     public final int BACKGROUND_CODE = 1;
-    private TextView notificationLabel;
-    private Switch notificationSwitch;
     private AutoCompleteTextView searchBar;
 
     @Override
@@ -25,9 +23,6 @@ public class SettingsPage extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_screen);
 
-        /**
-         * ToDo Implement notification function in buildViews
-         * **/
         //Builds all of the views within the screen and populates them with data
         buildViews();
 
@@ -37,7 +32,8 @@ public class SettingsPage extends AppCompatActivity
 
     //Refresh values when returning from an activity
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
         if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK)
         {
             refreshScreen();
@@ -63,37 +59,6 @@ public class SettingsPage extends AppCompatActivity
     //Builds all of the views within the screen with no data
     private void buildViews()
     {
-        //builds notification label and switch
-        notificationLabel = findViewById(R.id.notification_label);
-        notificationLabel.setText(R.string.switch_off_text);
-
-        notificationSwitch = findViewById(R.id.notification_switch);
-        notificationSwitch.setChecked(false);
-        notificationSwitch.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if(notificationSwitch.isChecked()) // is on
-                {
-                    notificationLabel.setText(R.string.switch_on_text);
-                    /**
-                     * ToDo: Write code to enable push notifications
-                     *
-                     * **/
-                }
-                else // is off
-                {
-                    notificationLabel.setText(R.string.switch_off_text);
-                    /**
-                     * ToDo: Write code to disable push notifications
-                     *
-                     * **/
-                }
-            }
-        });
-
-
         //Builds search_bar with auto complete and populates the search listing
         searchBar = findViewById(R.id.settings_search_bar);
         //When clicking an item, remake the listView so that any krypto that contains the item's name is shown
