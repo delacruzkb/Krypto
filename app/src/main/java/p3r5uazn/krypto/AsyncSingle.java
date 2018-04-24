@@ -3,12 +3,12 @@ package p3r5uazn.krypto;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class AsyncSingle extends AsyncTask<Void, Void, String> {
@@ -51,7 +51,12 @@ public class AsyncSingle extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        JSONObject jsonObject = JsonUtils.parseKryptoJson(s);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(s);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         KryptoCurrency krypto = new KryptoCurrency();
         try {
             krypto.setId(jsonObject.getString("id"));
