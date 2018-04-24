@@ -15,24 +15,10 @@
     <TextView
         android:id="@+id/currency_name"
         android:layout_width="160dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:text="BitCoin"
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/currency_threshold"
-        android:layout_width="135dp"
-        android:layout_height="wrap_content"
-        android:text="100,000,00.00"
-        android:textAlignment="textEnd"
-        android:textColor="@color/text"
-        android:textSize="20sp" />
-
-    <Button
-        android:id="@+id/edit_threshold_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Edit" />
 </TableRow>

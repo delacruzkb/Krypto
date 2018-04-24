@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 
@@ -52,8 +54,14 @@ public class HomeScreenListAdapter extends BaseAdapter
         KryptoCurrency kryptoCurrency = (KryptoCurrency) getItem(position);
 
         currencyName.setText(kryptoCurrency.getName());
-        currencyCost.setText(Double.toString(kryptoCurrency.getPriceUSD()));
-        currencyChange.setText(String.format(Double.toString(kryptoCurrency.getPerChange1h())));
+        if(kryptoCurrency.getPriceUSD() < 0.01) {
+            currencyCost.setText("<$0.01");
+        }
+        else{
+            NumberFormat formatter = NumberFormat.getCurrencyInstance();
+            currencyCost.setText(formatter.format(kryptoCurrency.getPriceUSD()));
+        }
+        currencyChange.setText(String.format(Double.toString(kryptoCurrency.getPerChange1h()))+"%");
 
 
         return rowView;
