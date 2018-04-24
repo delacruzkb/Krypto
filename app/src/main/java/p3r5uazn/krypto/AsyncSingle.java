@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class AsyncSingle extends AsyncTask<Void, Void, String> {
@@ -23,30 +24,35 @@ public class AsyncSingle extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... voids) {
-        BufferedReader in = null;
-        StringBuffer buffer = null;
+        URL url;
+        HttpURLConnection urlConnection = null;
+        String jsonStr = "";
+        String result = "";
+        InputStreamReader isr = null;
         try{
-            URL url = new URL("https://api.coinmarketcap.com/v1/ticker/" + crypto +"/");
-            in = new BufferedReader(new InputStreamReader(url.openStream()));
-            buffer = new StringBuffer();
-            int read;
-            char[] chars = new char[1024];
-            while ((read = in.read(chars)) != -1)
-                buffer.append(chars, 0, read);
-
-        }catch(Exception e){
+            url = new URL("https://api.coinmarketcap.com/v1/ticker/" + crypto +"/");
+            urlConnection = (HttpURLConnection) url.openConnection();
+            isr = new InputStreamReader(urlConnection.getInputStream());
+            BufferedReader in = new BufferedReader(isr);
+            while((jsonStr = in.readLine()) != null){
+                result += jsonStr;
+            }
+        }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            if(in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+        }
+        finally {
+            if(isr == null){
+                try{
+                    isr.close();
+                }catch (IOException x){
+                    x.printStackTrace();
                 }
             }
-
+            if(urlConnection == null){
+                urlConnection.disconnect();
+            }
         }
-        return buffer.toString();
+        return result;
     }
     @Override
     protected void onPostExecute(String s) {
