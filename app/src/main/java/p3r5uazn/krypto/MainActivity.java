@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         //Builds & Instantiates all of the views
         buildViews();
         //update the list with data from the database
-        refreshScreen();
+        refreshScreen(true);
 
     }
 
@@ -42,14 +42,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK) {
-            refreshScreen();
+            refreshScreen(false);
         }
     }
 
     //updates values on all views
-    private void refreshScreen()
+    private void refreshScreen(boolean showToast)
     {
-        AsyncUpdateFavoritesOnly updateTask = new AsyncUpdateFavoritesOnly(this);
+        if(showToast) {
+            Toast.makeText(this, getString(R.string.update_loading_message), Toast.LENGTH_SHORT).show();
+        }
+        AsyncUpdateFavoritesOnly updateTask = new AsyncUpdateFavoritesOnly(this, showToast);
         updateTask.execute();
     }
 
@@ -99,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                refreshScreen();
+                refreshScreen(true);
             }
         });
 

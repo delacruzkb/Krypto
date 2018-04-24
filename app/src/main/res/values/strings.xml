@@ -5,4 +5,5 @@
     <string name="app_name">Krypto</string>
     <string name="empty_list">:( \nYour favorites list is empty. We recommend you adding some kryptos!</string>
     <string name="update_loading_message">Loading . . .</string>
+    <string name="update_complete_message">Update Complete</string>
 </resources>

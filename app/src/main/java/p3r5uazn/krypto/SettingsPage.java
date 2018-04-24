@@ -52,7 +52,7 @@ public class SettingsPage extends AppCompatActivity
     //refreshes the values of the screen
     protected void refreshScreen()
     {
-        AsyncUpdateFavoritesOnly updateTask = new AsyncUpdateFavoritesOnly(this);
+        AsyncUpdateFavoritesOnly updateTask = new AsyncUpdateFavoritesOnly(this,false);
         updateTask.execute();
     }
 

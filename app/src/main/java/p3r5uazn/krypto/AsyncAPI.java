@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -189,6 +190,6 @@ public class AsyncAPI extends AsyncTask<Void, Void, String>
 
         AsyncTaskQueryFilteredData refreshTask = new AsyncTaskQueryFilteredData(context);
         refreshTask.execute();
-
+        Toast.makeText(context, context.getString(R.string.update_complete_message), Toast.LENGTH_SHORT).show();
     }
 }

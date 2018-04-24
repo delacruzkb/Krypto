@@ -37,6 +37,7 @@ public class SearchPage extends AppCompatActivity
     //pulls from the website and updates values
     private void refreshScreen()
     {
+        Toast.makeText(this, getString(R.string.update_loading_message), Toast.LENGTH_SHORT).show();
         AsyncAPI asyncAPI = new AsyncAPI(this);
         asyncAPI.execute();
     }

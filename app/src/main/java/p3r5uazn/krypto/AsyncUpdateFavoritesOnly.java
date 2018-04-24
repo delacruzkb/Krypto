@@ -5,12 +5,14 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -18,64 +20,77 @@ public class AsyncUpdateFavoritesOnly extends AsyncTask<Void, Void, ArrayList<Kr
 {
     private Context context;
     private KryptoDatabase favoritesDatabase;
+    boolean showToast = false;
 
-    public AsyncUpdateFavoritesOnly(Context context)
+    public AsyncUpdateFavoritesOnly(Context context,boolean showToast)
     {
         this.context = context;
         favoritesDatabase = Room.databaseBuilder(context, KryptoDatabase.class,"Favorites").build();
+        this.showToast = showToast;
     }
 
     @Override
     protected ArrayList<KryptoCurrency> doInBackground(Void... voids)
     {
         ArrayList<KryptoCurrency> data = (ArrayList<KryptoCurrency>) favoritesDatabase.kryptoCurrencyDao().getAllKryptoCurrencies();
-        BufferedReader in = null;
-        StringBuffer buffer = null;
-        JSONObject jsonObject = null;
-        String jsonString;
-        String crypto=null;
         KryptoCurrency krypto;
         ArrayList<KryptoCurrency> updatedList = new ArrayList<>();
+        URL url;
+        HttpURLConnection urlConnection = null;
+        String jsonStr;
+        String result="";
+        String crypto;
+        InputStreamReader isr = null;
+        JSONObject jsonObject=null;
+        JSONArray returnedJsonString;
+        for (int i = 0; i<data.size();i++)
+        {
+            result ="";
+            isr=null;
+            jsonObject=null;
+            returnedJsonString= null;
+            crypto = data.get(i).getId();
+            try {
+                url = new URL("https://api.coinmarketcap.com/v1/ticker/" + crypto +"/");
+                urlConnection = (HttpURLConnection) url.openConnection();
+                isr = new InputStreamReader(urlConnection.getInputStream());
+                BufferedReader in = new BufferedReader(isr);
+                while((jsonStr = in.readLine()) != null) {
+                    result += jsonStr;
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally {
+                if (isr == null) {
+                    try {
+                        isr.close();
+                    }
+                    catch (IOException x) {
+                        x.printStackTrace();
+                    }
+                }
+                if (urlConnection == null) {
+                    urlConnection.disconnect();
+                }
+            }
+            try {
+                returnedJsonString = new JSONArray(result);
+                jsonObject = returnedJsonString.getJSONObject(0);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+            krypto = processJSON(jsonObject);
 
-       for(int i = 0; i< data.size(); i++)
-       {
-           crypto = data.get(i).getName().toLowerCase();
-           try{
-               URL url = new URL("https://api.coinmarketcap.com/v1/ticker/" + crypto +"/");
-               in = new BufferedReader(new InputStreamReader(url.openStream()));
-               buffer = new StringBuffer();
-               int read;
-               char[] chars = new char[1024];
-               while ((read = in.read(chars)) != -1)
-                   buffer.append(chars, 0, read);
-
-           }catch(Exception e){
-               e.printStackTrace();
-           }finally {
-               if(in != null) {
-                   try {
-                       in.close();
-                   } catch (IOException e) {
-                       e.printStackTrace();
-                   }
-               }
-
-           }
-           jsonString = buffer.toString();
-           try {
-               jsonObject = new JSONObject(jsonString);
-           } catch (JSONException e) {
-               e.printStackTrace();
-           }
-           krypto = processJSON(jsonObject);
-
-           //if nothing is returned
-           if(!krypto.getName().equalsIgnoreCase(new KryptoCurrency().getName()))
-           {
-               updatedList.add(krypto);
-           }
-       }
-       return updatedList;
+            //don't add if nothing is returned
+            if(!krypto.getName().equalsIgnoreCase(new KryptoCurrency().getName()))
+            {
+                updatedList.add(krypto);
+            }
+        }
+        return updatedList;
     }
     @Override
     protected void onPostExecute(ArrayList<KryptoCurrency> kryptoCurrencies)
@@ -89,6 +104,10 @@ public class AsyncUpdateFavoritesOnly extends AsyncTask<Void, Void, ArrayList<Kr
         //Update the values wherever favorites is displayed
         AsyncTaskQueryFavorites refreshTask = new AsyncTaskQueryFavorites(context);
         refreshTask.execute();
+
+        if(showToast){
+            Toast.makeText(context, context.getString(R.string.update_complete_message), Toast.LENGTH_SHORT).show();
+        }
     }
     private KryptoCurrency processJSON(JSONObject jsonObject)
     {
