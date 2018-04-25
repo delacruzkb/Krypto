@@ -3,24 +3,25 @@ package p3r5uazn.krypto;
 import android.content.Intent;
 import android.graphics.Color;
 import android.icu.text.DecimalFormat;
-import android.media.TimedText;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.EditText;
-import android.widget.TextClock;
 
-import java.util.BitSet;
-import java.util.Calendar;
 
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.BarGraphSeries;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.util.MissingFormatArgumentException;
+
 
 
 //<<<<<<< HEAD
@@ -30,13 +31,6 @@ import java.util.MissingFormatArgumentException;
 //TODO: DANIEL PLEASE
 //>>>>>>> 4ad38a511b3d7f0704dd61aeb6f32dc2208550b1
 public class DetailsPage extends AppCompatActivity {
-    private TextView high;
-    private TextView low;
-    private TextView bid;
-    private TextView ask;
-    private TextView changes;
-    private TextView data;
-    private EditText note;
     private double simple;
     private String temp;
     private final int MILL = 1000000;
@@ -72,8 +66,8 @@ public class DetailsPage extends AppCompatActivity {
         }
         else
         {
-            simple = currency.getVolume24()/MILL;
-            temp = df.format(simple) + " M";
+            simple = currency.getVolume24()/ 1000;
+            temp = df.format(simple) + " K";
             volume.setText(temp);
         }
 
@@ -166,49 +160,102 @@ public class DetailsPage extends AppCompatActivity {
 
 
         GraphView graph = (GraphView) findViewById(R.id.graph);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                new DataPoint(0, currency.getPriceUSD()),
-                new DataPoint(1, currency.getPriceUSD()),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
+        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[]{
+                new DataPoint(1, currency.getPerChange1h()),
+                new DataPoint(2, currency.getPerChange24h()),
+                new DataPoint(3, currency.getPerChange7d())
+
         });
-        series.setColor(Color.BLUE);
-
-    /*    // generate Dates
-        Calendar calendar = Calendar.getInstance();
-        Date d1 = (Date) calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d2 = (Date) calendar.getTime();
-        calendar.add(Calendar.DATE, 1);
-        Date d3 = (Date) calendar.getTime();
-
-        GraphView graph2 = (GraphView) findViewById(R.id.graph);
-
-// you can directly pass Date objects to DataPoint-Constructor
-// this will convert the Date to double via Date#getTime()
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(d1, 1),
-                new DataPoint(d2, 5),
-                new DataPoint(d3, 3)
-        });
-
         graph.addSeries(series);
 
-// set date label formatter
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity()));
-        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter()
+        {
+            @Override
+            public String formatLabel(double value, boolean isValX)
+            {
+                if(value == 1)
+                {
+                    return "1Hr";
+                }
+                else if(value == 2)
+                {
+                    return "24Hrs";
+                }
+                else if(value == 3)
+                {
+                    return "7Days";
+                }
+                else if(value == 1.5 || value == 2.5 || value == 3.5)
+                {
+                    return "";
+                }
+                else
+                {
+                    return super.formatLabel(value, isValX) + " %";
+                }
+            }
+        });
 
-// set manual x bounds to have nice steps
-        graph.getViewport().setMinX(d1.getTime());
-        graph.getViewport().setMaxX(d3.getTime());
-        graph.getViewport().setXAxisBoundsManual(true);
+        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+            @Override
+            public int get(DataPoint data) {
+                return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+            }
+        });
+        graph.setTitle("Percentage");
+        graph.setTextAlignment(View.TEXT_ALIGNMENT_INHERIT);
+        series.setSpacing(50);
 
-// as we use dates as labels, the human rounding to nice readable numbers
-// is not necessary
-        graph.getGridLabelRenderer().setHumanRounding(false);
+
+        GraphView graph2 = (GraphView) findViewById(R.id.graph2);
+        BarGraphSeries<DataPoint> series2 = new BarGraphSeries<>(new DataPoint[]{
+                new DataPoint(1, currency.getAvailableSupply()/MILL),
+                new DataPoint(2, currency.getMaxSupply()/MILL),
+                new DataPoint(3, currency.getTotalSupply()/MILL)
+        });
+
+        graph2.addSeries(series2);
+        graph2.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter()
+        {
+            @Override
+            public String formatLabel(double value, boolean isValX)
+            {
+                if(value == 1)
+                {
+                    return "Available";
+                }
+                else if(value == 2)
+                {
+                    return "Max";
+                }
+                else if(value == 3)
+                {
+                    return "Total";
+                }
+                else if(value == 1.5 || value == 2.5 || value == 3.5)
+                {
+                    return "";
+                }
+                else
+                {
+                    return super.formatLabel(value, isValX) + "M";
+                }
+            }
+        });
+
+        graph2.setTitle("Supplies");
+        graph2.setTextAlignment(View.TEXT_ALIGNMENT_INHERIT);
+        //graph2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        series2.setSpacing(50);
+        series2.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+            @Override
+            public int get(DataPoint data) {
+                return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+            }
+        });
+
+
     }
-}*/
 
-        }
-    }
+
+}
