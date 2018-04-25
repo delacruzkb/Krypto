@@ -57,12 +57,33 @@
         </TableRow>
     </TableLayout>
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graph"
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="331dp"
-        android:layout_x="120px"
-        android:layout_y="30px" />
+        android:layout_height="252dp">
+
+        <TableRow>
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/graph"
+                android:layout_width="185dp"
+                android:layout_height="252dp"
+                android:layout_x="120px"
+                android:layout_y="30px" />
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/graph2"
+                android:layout_width="204dp"
+                android:layout_height="252dp"
+                android:layout_x="120px"
+                android:layout_y="30px" />
+
+
+        </TableRow>
+    </TableLayout>
+
+
+
+
 
     <TableLayout
         android:layout_width="match_parent"
