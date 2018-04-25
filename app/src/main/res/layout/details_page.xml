@@ -14,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:textSize="30sp"
-        android:textColor="@color/text" />
+        android:textColor="@color/colorAccent"
+        android:textSize="30sp" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -95,14 +95,14 @@
                 android:layout_width="226dp"
                 android:layout_height="wrap_content"
                 android:text="BTC Price"
-                android:textColor="@color/text" />
+                android:textColor="@color/colorAccent" />
 
 
             <TextView
                 android:layout_width="104dp"
                 android:layout_height="wrap_content"
                 android:text="Volume 24Hr"
-                android:textColor="@color/text" />
+                android:textColor="@color/colorAccent" />
         </TableRow>
 
         <TableRow>
@@ -132,13 +132,13 @@
                 android:layout_width="118dp"
                 android:layout_height="wrap_content"
                 android:text="Change in 24Hr %"
-                android:textColor="@color/text" />
+                android:textColor="@color/colorAccent" />
 
             <TextView
                 android:layout_width="101dp"
                 android:layout_height="wrap_content"
                 android:text="Change in 7D %"
-                android:textColor="@color/text" />
+                android:textColor="@color/colorAccent" />
 
 
         </TableRow>
@@ -170,14 +170,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Marcket Cap"
-                android:textColor="@color/text" />
+                android:text="Market Cap"
+                android:textColor="@color/colorAccent" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Available Supply"
-                android:textColor="@color/text" />
+                android:textColor="@color/colorAccent" />
         </TableRow>
 
         <TableRow>
@@ -200,17 +200,18 @@
         </TableRow>
 
         <TableRow>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Total Supply"
-                android:textColor="@color/text"/>
+                android:textColor="@color/colorAccent" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Max Supply"
-                android:textColor="@color/text"/>
+                android:textColor="@color/colorAccent" />
         </TableRow>
 
         <TableRow>

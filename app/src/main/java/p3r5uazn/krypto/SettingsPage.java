@@ -1,6 +1,7 @@
 package p3r5uazn.krypto;
 
 import android.app.Activity;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,12 +18,16 @@ public class SettingsPage extends AppCompatActivity
 {
     public final int BACKGROUND_CODE = 1;
     private AutoCompleteTextView searchBar;
+    private ListView listView;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_screen);
+        listView = findViewById(R.id.favorites_list);
+        listView.setEmptyView(findViewById(R.id.empty_list_item));
 
         //Builds all of the views within the screen and populates them with data
         buildViews();
@@ -83,6 +89,14 @@ public class SettingsPage extends AppCompatActivity
                     customSearch.execute();
                 }
                 return false;
+            }
+        });
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(fab.getContext(), SearchPage.class);
+                startActivityForResult(intent, BACKGROUND_CODE);
             }
         });
     }
