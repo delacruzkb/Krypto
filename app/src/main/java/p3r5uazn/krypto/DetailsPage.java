@@ -199,10 +199,13 @@ public class DetailsPage extends AppCompatActivity {
         series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
             @Override
             public int get(DataPoint data) {
-                return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                return Color.rgb(251, 210, 215);
             }
         });
         graph.setTitle("Percentage");
+        graph.setTitleColor(Color.rgb(70,192,186));
+        graph.getGridLabelRenderer().setHorizontalLabelsColor(Color.rgb(255, 255, 255));
+        graph.getGridLabelRenderer().setVerticalLabelsColor(Color.rgb(255, 255, 255));
         graph.setTextAlignment(View.TEXT_ALIGNMENT_INHERIT);
         series.setSpacing(50);
 
@@ -222,7 +225,7 @@ public class DetailsPage extends AppCompatActivity {
             {
                 if(value == 1)
                 {
-                    return "Available";
+                    return "Avail";
                 }
                 else if(value == 2)
                 {
@@ -244,13 +247,17 @@ public class DetailsPage extends AppCompatActivity {
         });
 
         graph2.setTitle("Supplies");
+        graph2.setTitleColor(Color.rgb(70, 192, 186));
+        graph2.getGridLabelRenderer().setHorizontalLabelsColor(Color.rgb(255, 255, 255));
+        graph2.getGridLabelRenderer().setVerticalLabelsColor(Color.rgb(255, 255, 255));
         graph2.setTextAlignment(View.TEXT_ALIGNMENT_INHERIT);
-        //graph2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        graph2.getViewport().setYAxisBoundsManual(true);
+        graph2.getViewport().setMinY(0);
         series2.setSpacing(50);
         series2.setValueDependentColor(new ValueDependentColor<DataPoint>() {
             @Override
             public int get(DataPoint data) {
-                return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+                return Color.rgb(251,  210, 215);
             }
         });
 
