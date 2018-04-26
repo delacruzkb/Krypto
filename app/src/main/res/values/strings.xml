@@ -3,5 +3,7 @@
     <string name="switch_on_text">Push Notifications enabled</string>
     <string name="switch_off_text">Push Notifications disabled</string>
     <string name="app_name">Krypto</string>
-    <string name="empty_list">:( \nYour favorites list is empty. We recommend you adding some cryptos!</string>
+    <string name="empty_list">\n\n\n\n:( \nYour favorites list is empty. We recommend you adding some kryptos!</string>
+    <string name="update_loading_message">Loading . . .</string>
+    <string name="update_complete_message">Update Complete</string>
 </resources>

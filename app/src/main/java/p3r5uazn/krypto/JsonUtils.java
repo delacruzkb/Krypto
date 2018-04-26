@@ -2,13 +2,13 @@
 
 import android.util.Log;
 
-import org.json.JSONArray;
+
 import org.json.JSONObject;
 
-/**
+*//**
  * Created by smainar on 3/17/2018.
- */
-/*
+ *//*
+
 public class JsonUtils {
     public static JSONObject parseKryptoJson(String json) {
         JSONObject krypto = null;

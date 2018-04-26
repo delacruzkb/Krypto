@@ -18,18 +18,8 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
 
     private String id, symbol;
     private double priceUSD, priceBTC, volume24, marketCap, availableSupply, totalSupply;
-    private double threshold, perChange1h, perChange24h, perChange7d, lastUpdated, maxSupply;
+    private double perChange1h, perChange24h, perChange7d, lastUpdated, maxSupply;
     private int rank;
-
-    public double getThreshold() {
-        return threshold;
-    }
-
-    public void setThreshold(double threshold) {
-        this.threshold = roundToCash(threshold);
-    }
-
-
 
 
     public KryptoCurrency()
@@ -48,7 +38,6 @@ public class KryptoCurrency implements Serializable, Comparable<Object>
         perChange24h = 0;
         perChange7d = 0;
         lastUpdated = 0;
-        threshold = 1000;
         maxSupply = 0;
 
     }

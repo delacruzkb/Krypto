@@ -54,10 +54,7 @@ public class SettingsScreenListAdapter extends BaseAdapter
     {
         View rowView = mLayoutInflater.inflate(R.layout.settings_screen_list_item, parent,false);
 
-
-
         TextView currencyName = rowView.findViewById(R.id.currency_name);
-        final TextView currencyThreshold = rowView.findViewById(R.id.currency_threshold);
 
         KryptoCurrency kryptoCurrency = data.get(position);
         ImageButton delete_button = rowView.findViewById(R.id.delete_button);
@@ -77,47 +74,8 @@ public class SettingsScreenListAdapter extends BaseAdapter
             }
         });
 
-        Button editThresholdButton = rowView.findViewById(R.id.edit_threshold_button);
-        editThresholdButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                View view = (LayoutInflater.from(parent.getContext())).inflate(R.layout.user_input, null);
-                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(parent.getContext());
-                alertBuilder.setView(view);
-                final EditText userInput = view.findViewById(R.id.user_input);
-
-                alertBuilder.setCancelable(true);
-                alertBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        //update Threshold
-                        KryptoCurrency temp = data.get(position);
-                        temp.setThreshold(Double.parseDouble(userInput.getText().toString()));
-                        ArrayList<KryptoCurrency> tempList = new ArrayList<>();
-                        tempList.add(temp);
-                        //re-add to database to update value
-                        AsyncTaskInsertDatabase insertTask1 = new AsyncTaskInsertDatabase(favoritesDatabase);
-                        insertTask1.execute(tempList);
-                        AsyncTaskInsertDatabase insertTask2 = new AsyncTaskInsertDatabase(database);
-                        insertTask2.execute(tempList);
-                        //refresh screen
-                        AsyncTaskQueryFavorites queryFavorites = new AsyncTaskQueryFavorites(context);
-                        queryFavorites.execute();
-                    }
-                });
-
-                Dialog dialog = alertBuilder.create();
-                dialog.show();
-                notifyDataSetChanged();
-            }
-        });
 
         currencyName.setText(kryptoCurrency.getName());
-        currencyThreshold.setText(String.format(Double.toString(kryptoCurrency.getThreshold())));
-
-
         return rowView;
     }
 }

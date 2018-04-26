@@ -1,6 +1,7 @@
 package p3r5uazn.krypto;
 
 import android.app.Activity;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -8,25 +9,26 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SettingsPage extends AppCompatActivity
 {
     public final int BACKGROUND_CODE = 1;
-    private TextView notificationLabel;
-    private Switch notificationSwitch;
     private AutoCompleteTextView searchBar;
+    private ListView listView;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_screen);
+        listView = findViewById(R.id.favorites_list);
+        listView.setEmptyView(findViewById(R.id.empty_list_item));
 
-        /**
-         * ToDo Implement notification function in buildViews
-         * **/
         //Builds all of the views within the screen and populates them with data
         buildViews();
 
@@ -36,7 +38,8 @@ public class SettingsPage extends AppCompatActivity
 
     //Refresh values when returning from an activity
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
         if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK)
         {
             refreshScreen();
@@ -55,44 +58,13 @@ public class SettingsPage extends AppCompatActivity
     //refreshes the values of the screen
     protected void refreshScreen()
     {
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(this);
-        queryTask.execute();
+        AsyncUpdateFavoritesOnly updateTask = new AsyncUpdateFavoritesOnly(this,false);
+        updateTask.execute();
     }
 
     //Builds all of the views within the screen with no data
     private void buildViews()
     {
-        //builds notification label and switch
-        notificationLabel = findViewById(R.id.notification_label);
-        notificationLabel.setText(R.string.switch_off_text);
-
-        notificationSwitch = findViewById(R.id.notification_switch);
-        notificationSwitch.setChecked(false);
-        notificationSwitch.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                if(notificationSwitch.isChecked()) // is on
-                {
-                    notificationLabel.setText(R.string.switch_on_text);
-                    /**
-                     * ToDo: Write code to enable push notifications
-                     *
-                     * **/
-                }
-                else // is off
-                {
-                    notificationLabel.setText(R.string.switch_off_text);
-                    /**
-                     * ToDo: Write code to disable push notifications
-                     *
-                     * **/
-                }
-            }
-        });
-
-
         //Builds search_bar with auto complete and populates the search listing
         searchBar = findViewById(R.id.settings_search_bar);
         //When clicking an item, remake the listView so that any krypto that contains the item's name is shown
@@ -117,6 +89,14 @@ public class SettingsPage extends AppCompatActivity
                     customSearch.execute();
                 }
                 return false;
+            }
+        });
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(fab.getContext(), SearchPage.class);
+                startActivityForResult(intent, BACKGROUND_CODE);
             }
         });
     }

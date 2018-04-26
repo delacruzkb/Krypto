@@ -2,6 +2,7 @@ package p3r5uazn.krypto;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,10 +14,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.support.design.widget.FloatingActionButton;
+import android.widget.Toast;
 
-/**
- * TODO: refresh button
- * */
 
 public class MainActivity extends AppCompatActivity {
     private static final int BACKGROUND_CODE = 1;
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         //Builds & Instantiates all of the views
         buildViews();
         //update the list with data from the database
-        refreshScreen();
+        refreshScreen(true);
 
     }
 
@@ -43,17 +42,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == BACKGROUND_CODE && resultCode == Activity.RESULT_OK) {
-            refreshScreen();
+            refreshScreen(false);
         }
     }
 
     //updates values on all views
-    private void refreshScreen()
+    private void refreshScreen(boolean showToast)
     {
-        /**TODO: Shaina's pull code to update the Favorites Database
-         * */
-        AsyncTaskQueryFavorites queryTask = new AsyncTaskQueryFavorites(this);
-        queryTask.execute();
+        if(showToast) {
+            Toast.makeText(this, getString(R.string.update_loading_message), Toast.LENGTH_SHORT).show();
+        }
+        AsyncUpdateFavoritesOnly updateTask = new AsyncUpdateFavoritesOnly(this, showToast);
+        updateTask.execute();
     }
 
 
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                refreshScreen();
+                refreshScreen(true);
             }
         });
 
